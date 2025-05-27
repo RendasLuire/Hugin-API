@@ -1,8 +1,14 @@
-const express = require("express");
+import express from "express";
+import usersRoutes from "./routes/users";
+
 const app = express();
 
-app.get("/", (req, res) => res.send("Express on Vercel"));
+app.use(express.json());
 
-app.listen(3000, () => console.log("Server ready on port 3000."));
+app.get("/", (req, res) => {
+  res.send("Express on Vercel with TS");
+});
 
-module.exports = app;
+app.use("/users", usersRoutes);
+
+export default app;

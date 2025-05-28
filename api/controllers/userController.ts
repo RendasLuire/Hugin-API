@@ -1,26 +1,38 @@
 import { Request, Response } from "express";
+import connectToDatabase from "../lib/mongodb";
 import { User } from "../models/User.model";
 import mongoose from "mongoose";
 
 export const testUsers = (req: Request, res: Response) => {
   res.json([
     {
-      id: 1,
-      name: "John Doe",
-      email: "JohnDoe@correo.com",
-      passwordHash: "hashed_password_123",
-      createdAt: new Date("2023-01-01T00:00:00Z"),
-      updatedAt: new Date("2023-01-01T00:00:00Z"),
+      data: {
+        id: 1,
+        name: "John Doe",
+        email: "JohnDoe@correo.com",
+        passwordHash: "hashed_password_123",
+        createdAt: new Date("2023-01-01T00:00:00Z"),
+        updatedAt: new Date("2023-01-01T00:00:00Z"),
+      },
+      message: "Test Users endpoint is working",
     }
   ]);
 };
 
 export const getUsers = async (req: Request, res: Response) => {
   try {
+    await connectToDatabase();
     const users = await User.find();
-    res.json(users);
+    res.json({
+      data: users,
+      message: "Users List retrieved successfully",
+    });
   } catch (error) {
-    res.status(500).json({ message: "Error al obtener usuarios", error });
+    res.status(500).json({ 
+      data: {},
+      message: "Error al obtener usuarios", 
+      error 
+    });
   }
 };
 
@@ -31,6 +43,7 @@ export const getUserById = async (req: Request, res: Response) => {
     if (!mongoose.Types.ObjectId.isValid(userId)) {
       res.status(400).json({ message: "ID no válido" });
     }
+    //await connectToDatabase();
     const user = await User.findById(userId);
     if (!user) res.status(404).json({ message: "Usuario no encontrado" });
     res.json(user);
@@ -42,6 +55,7 @@ export const getUserById = async (req: Request, res: Response) => {
 export const createUser = async (req: Request, res: Response) => {
 try {
 const { name, email, passwordHash } = req.body;
+//await connectToDatabase();
 const existingUser = await User.findOne({ email });
 if (existingUser) res.status(400).json({ message: "El correo ya está en uso" });
 
@@ -56,6 +70,7 @@ res.status(500).json({ message: "Error al crear usuario", error });
 export const updateUser = async (req: Request, res: Response) => {
 try {
 const { name, email, passwordHash } = req.body;
+//await connectToDatabase();
 const updatedUser = await User.findByIdAndUpdate(
 req.params.id,
 { name, email, passwordHash },
@@ -71,6 +86,7 @@ res.status(500).json({ message: "Error al actualizar usuario", error });
 
 export const deleteUser = async (req: Request, res: Response) => {
 try {
+  //await connectToDatabase();
 const deletedUser = await User.findByIdAndDelete(req.params.id);
 if (!deletedUser) res.status(404).json({ message: "Usuario no encontrado" });
 res.json({ message: "Usuario eliminado correctamente" });

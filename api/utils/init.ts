@@ -15,7 +15,7 @@ export async function initializeSystem() {
   await User.create({
     name: "Admin",
     email: "admin@example.com",
-    password: hashedPassword,
+    passwordHash: hashedPassword,
     role: "admin",
   });
 

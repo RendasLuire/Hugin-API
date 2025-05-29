@@ -1,8 +1,6 @@
-import dotenv from "dotenv";
 import express from "express";
-import usersRoutes from "./routes/users";
-
-dotenv.config();
+import usersRoutes from "./routes/user.router";
+import authRoutes from "./routes/auth.router";
 
 const app = express();
 
@@ -13,5 +11,6 @@ app.get("/", (req, res) => {
 });
 
 app.use("/users", usersRoutes);
+app.use("/auth", authRoutes);
 
 export default app;

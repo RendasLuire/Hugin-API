@@ -1,11 +1,9 @@
 import mongoose from "mongoose";
-import dotenv from "dotenv";
 
-dotenv.config();
 const MONGODB_URI = process.env.MONGODB_URI;
 
 if (!MONGODB_URI) {
-  throw new Error("Debes definir la variable de entorno MONGODB_URI");
+  throw new Error("You have not defined the MONGODB_URI environment variable");
 }
 
 const uri: string = MONGODB_URI;
@@ -24,14 +22,15 @@ if (!global.mongooseCache) {
 const cached = global.mongooseCache;
 
 async function connectToDatabase() {
-  if (cached.conn) return cached.conn;
 
+  if (cached.conn) return cached.conn;
+  
   if (!cached.promise) {
     cached.promise = mongoose.connect(uri, {
-      dbName: "TestDB",
+      dbName: process.env.DB_NAME || "hugin",
     });
   }
-
+  
   cached.conn = await cached.promise;
   return cached.conn;
 }

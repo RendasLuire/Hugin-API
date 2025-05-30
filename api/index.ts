@@ -2,10 +2,13 @@ import express from "express";
 import usersRoutes from "./routes/user.router";
 import authRoutes from "./routes/auth.router";
 import { initializeSystem } from "./utils/init"
+import cors from "cors";
 
 const app = express();
 
 app.use(express.json());
+
+app.use(cors()); 
 
 
 app.get("/", (req, res) => {

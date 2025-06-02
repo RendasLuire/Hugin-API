@@ -11,6 +11,7 @@ export const login = async (req: Request, res: Response) => {
       data: {},
       message: "Fields email and password are required",
     });
+    return
   }
   try {
     await connectToDatabase();
@@ -20,6 +21,7 @@ export const login = async (req: Request, res: Response) => {
         data: {},
         message: "User incorrect",
       });
+      return
     }
     const isValid = await bcrypt.compare(password, user?.passwordHash as string);
 
@@ -28,6 +30,7 @@ export const login = async (req: Request, res: Response) => {
         data: {},
         message: "Password incorrect",
       });
+      return
     }
     
     const accessToken = jwt.sign(

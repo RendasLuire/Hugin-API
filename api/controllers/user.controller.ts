@@ -3,6 +3,7 @@ import connectToDatabase from "../lib/mongodb";
 import bcrypt from "bcryptjs";
 import { User } from "../models/User.model";
 import mongoose from "mongoose";
+import { createInitUserData } from "../utils/users";
 
 export const testUsers = (req: Request, res: Response) => {
   res.json([
@@ -88,6 +89,8 @@ if (existingUser) {
 const passwordHash = await bcrypt.hash(password, 10);
 const newUser = new User({ name, email, passwordHash });
 await newUser.save();
+
+await createInitUserData(newUser._id);
 res.status(201).json({
   data: {
     id: newUser._id,

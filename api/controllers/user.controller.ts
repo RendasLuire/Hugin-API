@@ -90,6 +90,7 @@ const newUser = new User({ name, email, passwordHash });
 await newUser.save();
 res.status(201).json({
   data: {
+    id: newUser._id,
     name: newUser.name,
     email: newUser.email,
   },

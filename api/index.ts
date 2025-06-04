@@ -1,6 +1,7 @@
 import express from "express";
 import usersRoutes from "./routes/user.router";
 import authRoutes from "./routes/auth.router";
+import accountRoutes from "./routes/account.router";
 import { initializeSystem } from "./utils/init"
 import cors from "cors";
 
@@ -22,5 +23,6 @@ app.get("/initialize", async (req, res) => {
 
 app.use("/users", usersRoutes);
 app.use("/auth", authRoutes);
+app.use("/accounts", accountRoutes);
 
 export default app;

@@ -1,6 +1,8 @@
 import connectToDatabase from "../lib/mongodb";
 import { User } from "../models/User.model";
+import { AccountType } from "../models/AccountType.model";
 import bcrypt from "bcryptjs";
+import { createInitUserData } from "./users";
 
 const accountTypes = [
   {
@@ -65,23 +67,14 @@ export async function initializeSystem() {
     return;
   }
 
-  const hashedPassword = await bcrypt.hash("admin123", 10);
-  await User.create({
-    name: "Admin",
-    email: "admin@example.com",
-    passwordHash: hashedPassword,
-    role: "admin",
-  });
-  console.log("Admin user created successfully.");
-
-  const existingAccountTypes = await User.find();
+  const existingAccountTypes = await AccountType.find();
   if (existingAccountTypes.length > 0) {
     console.log("Account types already exist. Skipping initialization.");
     return;
   }
 
   for (const type of accountTypes) {
-    await User.create({
+    await AccountType.create({
       name: type.name,
       description: type.description,
       key: type.key,
@@ -90,5 +83,17 @@ export async function initializeSystem() {
     });
   }
   console.log("Account types initialized successfully.");
+
+  const hashedPassword = await bcrypt.hash("admin123", 10);
+  const initUser = await User.create({
+    name: "Admin",
+    email: "admin@example.com",
+    passwordHash: hashedPassword,
+    role: "admin",
+  });
+  console.log("Admin user created successfully.");
+
+  await createInitUserData(initUser._id);
+
 
 }

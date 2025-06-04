@@ -80,7 +80,12 @@ export const createAccountType = async (req: Request, res: Response) => {
     await newAccountType.save();
 
     res.status(201).json({
-      data: newAccountType,
+      data: {
+        id: newAccountType._id,
+        name: newAccountType.name,
+        description: newAccountType.description,
+        key: newAccountType.key
+      },
       message: "Account Type created successfully",
     });
   } catch (error) {

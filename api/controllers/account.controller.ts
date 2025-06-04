@@ -28,7 +28,7 @@ export const getAccounts = async (req: Request, res: Response) => {
 
   try {
     await connectToDatabase();
-    const accounts = await Account.find({userId: user._id});
+    const accounts = await Account.find({userId: user.id});
 
     res.json({
       data: accounts,
@@ -64,7 +64,7 @@ export const getAccountById = async (req: Request, res: Response) => {
 
   try {
     await connectToDatabase();
-    const account = await Account.findOne({ _id: accountId, userId: user._id });
+    const account = await Account.findOne({ _id: accountId, userId: user.id });
 
     if (!account) {
       res.status(404).json({
@@ -116,13 +116,14 @@ export const createAccount = async (req: Request, res: Response) => {
       limit: limit,
       cutDay: cutDay,
       payDay: payDay,
-      userId: user._id,
+      userId: user.id,
     });
 
     await newAccount.save();
 
     res.status(201).json({
       data: {
+        id: newAccount._id,
         name: newAccount.name,
         balance: newAccount.balance
       },
@@ -160,7 +161,7 @@ export const updateAccount = async (req: Request, res: Response) => {
   try {
     await connectToDatabase();
     const updatedAccount = await Account.findOneAndUpdate(
-      { _id: accountId, userId: user._id },
+      { _id: accountId, userId: user.id },
       { name, bankId, accountTypeId, balance, limit, cutDay, payDay },
       { new: true, runValidators: true }
     );
@@ -207,7 +208,7 @@ export const deleteAccount = async (req: Request, res: Response) => {
 
   try {
     await connectToDatabase();
-    const deletedAccount = await Account.findOneAndDelete({ _id: accountId, userId: user._id });
+    const deletedAccount = await Account.findOneAndDelete({ _id: accountId, userId: user.id });
 
     if (!deletedAccount) {
       res.status(404).json({

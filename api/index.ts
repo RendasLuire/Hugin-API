@@ -3,6 +3,7 @@ import usersRoutes from "./routes/user.router";
 import authRoutes from "./routes/auth.router";
 import accountRoutes from "./routes/account.router";
 import accountTypeRoutes from "./routes/accountType.router";
+import bankRoutes from "./routes/bank.router";
 import { initializeSystem } from "./utils/init"
 import cors from "cors";
 
@@ -26,5 +27,6 @@ app.use("/users", usersRoutes);
 app.use("/auth", authRoutes);
 app.use("/accounts", accountRoutes);
 app.use("/account-types", accountTypeRoutes);
+app.use("/banks", bankRoutes);
 
 export default app;

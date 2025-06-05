@@ -41,3 +41,13 @@ export async function createInitUserData(userId: Types.ObjectId) {
 
 
 }
+
+export async function deleteUserData(userId: Types.ObjectId) {
+  await connectToDatabase();
+  
+  await Account.deleteMany({ userId });
+
+  await Bank.deleteMany({ userId });
+
+  console.log("User data deleted successfully.");
+}

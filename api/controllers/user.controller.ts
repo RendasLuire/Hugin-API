@@ -3,7 +3,7 @@ import connectToDatabase from "../lib/mongodb";
 import bcrypt from "bcryptjs";
 import { User } from "../models/User.model";
 import mongoose from "mongoose";
-import { createInitUserData } from "../utils/users";
+import { createInitUserData, deleteUserData } from "../utils/users";
 
 export const testUsers = (req: Request, res: Response) => {
   res.json([
@@ -110,14 +110,15 @@ res.status(500).json({
 
 export const updateUser = async (req: Request, res: Response) => {
   const userId = req.params.id;
-  const { name, email, passwordHash } = req.body;
+  const { name, email, password } = req.body;
+  let passwordHash
   if (!mongoose.Types.ObjectId.isValid(userId)) {
     res.status(400).json({ 
       data: {},
       message: "Invalid ID"
     });
   }
-  if (!name || !email || !passwordHash) {
+  if (!name && !email && !passwordHash) {
     res.status(400).json({
       data: {},
       message: "Fields name, email, and passwordHash are required",
@@ -125,9 +126,27 @@ export const updateUser = async (req: Request, res: Response) => {
   }
 try {
 await connectToDatabase();
+const existingUser = await User.findById(userId);
+if (!existingUser) {
+  res.status(404).json({
+    data: {},
+    message: "User not found",
+  });
+  return
+}
+
+if (password) {
+passwordHash = await bcrypt.hash(password, 10)
+}
+
+
+const newName = name || existingUser.name;
+const newEmail = email || existingUser.email;
+const newPasswordHash = passwordHash || existingUser.passwordHash;
+
 const updatedUser = await User.findByIdAndUpdate(
 userId,
-{ name, email, passwordHash },
+{ name:newName, email: newEmail, passwordHash: newPasswordHash },
 { new: true, runValidators: true }
 );
 if (!updatedUser) {
@@ -135,9 +154,13 @@ if (!updatedUser) {
     data: {},
     message: "User not found",
   });
+  return
 }
 res.json({
-  data: updatedUser,
+  data: {
+    id: updatedUser._id,
+    name: updatedUser.name
+  },
   message: "User updated successfully",
 });
 } catch (error) {
@@ -166,11 +189,19 @@ if (!deletedUser) {
     data: {},
     message: "User not found",
   });
+  return
 }
+
+await deleteUserData(deletedUser.id);
+
 res.json({
-  data: deletedUser,
+  data: {
+    id: deletedUser._id,
+    name: deletedUser.name
+  },
   message: "User deleted successfully",
 });
+
 } catch (error) {
 res.status(500).json({
   data: {},

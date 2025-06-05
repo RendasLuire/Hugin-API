@@ -8,6 +8,8 @@ const AccountSchema = new Schema({
   balance: { type: Number, default: 0 },
   limit: { type: Number, default: 0 },
   nextPay: { type: Number, default: 0 },
+  state: {type: String, enum: ['active', 'archived', 'deleted'], default: "active"},
+  deletedAt: { type: Date, default: null },
   cutDay: { type: Number },
   payDay: { type: Number }   
 }, { timestamps: true });

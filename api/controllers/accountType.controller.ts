@@ -16,7 +16,7 @@ export const testAccountTypes = (req: Request, res: Response) => {
   export const getAccountTypes = async (req: Request, res: Response) => {
     try {
       await connectToDatabase();
-      const accountTypes = await AccountType.find();
+      const accountTypes = await AccountType.find().select('-createdAt -updatedAt -__v');
 
       res.json({
         data: accountTypes,
@@ -43,7 +43,7 @@ export const testAccountTypes = (req: Request, res: Response) => {
 
     try {
       await connectToDatabase();
-      const accountType = await AccountType.findById(accountTypeId);
+      const accountType = await AccountType.findById(accountTypeId).select('-createdAt -updatedAt -__v');
       if (!accountType) {
         res.status(404).json({
           data: {},
@@ -111,11 +111,27 @@ export const updateAccountType = async (req: Request, res: Response) => {
 
   try {
     await connectToDatabase();
+
+    const existingAccountType = await AccountType.findById(accountTypeId)
+    if (!existingAccountType){
+      res.status(400).json({
+        data: {},
+        message: "Account Type is not exist.",
+      });
+      return;
+    }
+
+    const newName = name || existingAccountType.name
+    const newDescription = description || existingAccountType.description
+    const newKey = key || existingAccountType.key
+    const newIcon = icon || existingAccountType.icon
+    const newColor = color || existingAccountType.color
+
     const updatedAccountType = await AccountType.findByIdAndUpdate(
       accountTypeId,
-      { name, description, key, icon, color },
+      { name: newName, description: newDescription, key: newKey, icon: newIcon, color: newColor },
       { new: true }
-    );
+    ).select('-createdAt -updatedAt -__v');
 
     if (!updatedAccountType) {
       res.status(404).json({
@@ -162,7 +178,10 @@ export const deleteAccountType = async (req: Request, res: Response) => {
     }
 
     res.json({
-      data: deletedAccountType,
+      data: {
+        id: deletedAccountType._id,
+        name: deletedAccountType.name
+      },
       message: "Account Type deleted successfully",
     });
   } catch (error) {

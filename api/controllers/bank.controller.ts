@@ -25,7 +25,7 @@ export const getBanks = async (req: Request, res: Response) => {
   }
   try {
     await connectToDatabase();
-    const banks = await Bank.find({ userId: user.id });
+    const banks = await Bank.find({ userId: user.id, state: "active" }).select('-userId -updatedAt -state -deletedAt -__v');
 
     res.json({
       data: banks,
@@ -62,7 +62,7 @@ export const getBankById = async (req: Request, res: Response) => {
 
   try {
     await connectToDatabase();
-    const bank = await Bank.findOne({ _id: bankId, userId: user.id });
+    const bank = await Bank.findOne({ _id: bankId, userId: user.id, state: "active" }).select('-userId -updatedAt -state -deletedAt -__v');
     if (!bank) {
       res.status(404).json({
         data: {},
@@ -104,6 +104,15 @@ export const createBank = async (req: Request, res: Response) => {
 
   try {
     await connectToDatabase();
+
+    if(name == "Testamento"){
+      res.status(400).json({
+        data: {},
+        message: "A travel only can have a testament",
+      });
+      return;
+    }
+    
     const newBank = await Bank.create({
       userId: user.id,
       name,
@@ -111,7 +120,10 @@ export const createBank = async (req: Request, res: Response) => {
     });
 
     res.status(201).json({
-      data: newBank,
+      data: {
+        id: newBank._id,
+        name: newBank.name
+      },
       message: "Bank created successfully",
     });
   } catch (error) {
@@ -146,9 +158,31 @@ export const updateBank = async (req: Request, res: Response) => {
 
   try {
     await connectToDatabase();
+
+    const existingBank = await Bank.findById(bankId)
+
+    if(!existingBank) {
+      res.status(404).json({
+        data: {},
+        message: "Bank not found",
+      });
+      return;
+    }
+
+    if(existingBank.name == "Testamento"){
+      res.status(400).json({
+        data: {},
+        message: "A travel only can have a testament",
+      });
+      return;
+    }
+
+    const newName = name || existingBank.name
+    const newLogoUrl = logoUrl || existingBank.logoUrl
+
     const updatedBank = await Bank.findOneAndUpdate(
-      { _id: bankId, userId: user.id },
-      { name, logoUrl },
+      { _id: bankId, userId: user.id, state:"active" },
+      { name: newName, logoUrl: newLogoUrl },
       { new: true }
     );
 
@@ -161,7 +195,10 @@ export const updateBank = async (req: Request, res: Response) => {
     }
 
     res.json({
-      data: updatedBank,
+      data: {
+        id: updatedBank._id,
+        name: updatedBank.name
+      },
       message: "Bank updated successfully",
     });
   } catch (error) {
@@ -195,7 +232,28 @@ export const deleteBank = async (req: Request, res: Response) => {
 
   try {
     await connectToDatabase();
-    const deletedBank = await Bank.findOneAndDelete({ _id: bankId, userId: user.id });
+
+    const existingBank = await Bank.findById(bankId)
+
+    if(!existingBank) {
+      res.status(404).json({
+        data: {},
+        message: "Bank not found",
+      });
+      return;
+    }
+
+    if(existingBank.name == "Testamento"){
+      res.status(400).json({
+        data: {},
+        message: "A travel only can have a testament",
+      });
+      return;
+    }
+
+    const deletedBank = await Bank.findOneAndUpdate({ _id: bankId, userId: user.id, state:"active" }, 
+      { state: 'deleted', deletedAt: new Date() }, 
+      { new: true });
 
     if (!deletedBank) {
       res.status(404).json({
@@ -206,7 +264,10 @@ export const deleteBank = async (req: Request, res: Response) => {
     }
 
     res.json({
-      data: deletedBank,
+      data: {
+        id: deletedBank._id,
+        name: deletedBank.name
+      },
       message: "Bank deleted successfully",
     });
   } catch (error) {

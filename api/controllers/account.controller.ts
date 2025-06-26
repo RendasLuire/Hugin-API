@@ -3,18 +3,11 @@ import connectToDatabase from "../lib/mongodb";
 import { Account } from '../models/Account.model';
 import { Bank } from '../models/Bank.model'
 import { AccountType } from '../models/AccountType.model';
+import { testAccounts } from '../services/account.service';
 
-export const testAccounts = (req: Request, res: Response) => {
-  res.json([
-    {
-      data: {
-        name: "Test Account",
-        balance: 1000,
-        accountType: "Savings",
-      },
-      Message: "Test Accounts endpoint is working",
-    },
-  ])
+export const testAccountsController = (req: Request, res: Response) => {
+  const response = testAccounts();
+  res.json(response);
 }
 
 export const getAccounts = async (req: Request, res: Response) => {

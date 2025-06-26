@@ -1,16 +1,16 @@
 import { Router } from "express";
 import { 
-  testAccounts,
   getAccounts,
   getAccountById,
   createAccount,
   updateAccount,
-  deleteAccount
+  deleteAccount,
+  testAccountsController
  } from "../controllers/account.controller";
 import { authMiddleware } from "../middlewares/auth";
 
 const router = Router();
-router.get("/test", testAccounts);
+router.get("/test", testAccountsController);
 router.get("/", authMiddleware, getAccounts);
 router.get("/:id", authMiddleware, getAccountById);
 router.post("/", authMiddleware, createAccount);

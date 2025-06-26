@@ -22,20 +22,7 @@ and action bears weight.
 
 ---
 
-## Data Models
-
-### User
-
-```JSON
-{
-  "_id": "ObjectId",
-  "name": "String",
-  "email": "String",
-  "passwordHash": "String",
-  "createdAt": "Date",
-  "updatedAt": "Date"
-}
-```
+## 📦 Data Models
 
 ### Accounts
 
@@ -54,151 +41,73 @@ and action bears weight.
   "updatedAt": "Date"
 }
 ```
-
-### Movements
-
-```JSON
-{
-  "_id": "ObjectId",
-  "userId": "ObjectId",
-  "accountId": "ObjectId",
-  "movementTypeId": "ObjectId",
-  "categoryId": "ObjectId",
-  "description": "String",
-  "amount": "Number",
-  "date": "Date",
-  "createdAt": "Date",
-  "updatedAt": "Date"
-}
-```
-
-### Categories
-
-```JSON
-{
-  "_id": "ObjectId",
-  "name": "String",
-  "subCategories":[
-    {
-      "_id": "ObjectId",
-      "name": "String",
-      "classification" : "String"  // "Necessary", "Desirable", "Optional", "Unnecessary" or "Bad" 
-    }
-  ]
-}
-```
-
-### AccountTypes
-
-```JSON
-{
-  "_id": "ObjectId",
-  "name": "String"            // e.g.: "Credit", "Debit", "Cash", "Investment"
-}
-```
-
-### MovementTypes
-
-```JSON
-{
-  "_id": "ObjectId",
-  "name": "String"            // e.g.: "Income", "Expense", "Transfer", "Debt"
-}
-
-```
-
-### Reports
-
-```JSON
-{
-  "_id": "ObjectId",
-  "userId": "ObjectId",
-  "type": "String",             // e.g.: "monthly", "category", "summary"
-  "filters": "Object",          // e.g.: { from: Date, to: Date }
-  "generatedAt": "Date",
-  "content": "Object"           // resultado JSON del análisis
-}
-
-```
-
-### Banks
-
-```JSON
-{
-  "_id": "ObjectId",
-  "name": "String",
-  "logoUrl": "String",          // opcional
-  "country": "String"
-}
-
-```
-
-### Budgets
-
-```JSON
-{
-  "_id": "ObjectId",
-  "userId": "ObjectId",
-  "categoryId": "ObjectId",
-  "amount": "Number",
-  "periodId": "ObjectId",
-  "spent": "Number",            // calculado dinámicamente
-  "createdAt": "Date",
-  "updatedAt": "Date"
-}
-
-```
-
-### Periods
-
-```JSON
-{
-  "_id": "ObjectId",
-  "userId": "ObjectId",
-  "name": "String",             // e.g.: "Enero 2025"
-  "startDate": "Date",
-  "endDate": "Date",
-  "createdAt": "Date"
-}
-
-```
-
-### Suggestions
-
-```JSON
-{
-  "_id": "ObjectId",
-  "userId": "ObjectId",
-  "message": "String",
-  "type": "String",             // e.g.: "warning", "tip", "alert"
-  "relatedTo": "String",        // opcional: "budget", "spending", "movement"
-  "generatedAt": "Date",
-  "read": "Boolean"
-}
-
-```
-
 ---
 
-## Routes
-
-### User
+## 🌐 Routes
 
 ### Accounts
+#### ✅ GET /accounts
+- **Descripción:** Obtiene todas las cuentas.
+- **Response:**  
+    - `200 OK`: Array de cuentas
+    - `404 Not Found`: No hay cuentas
+    - `500 Internal Server Error`
 
-### Movements
+#### ✅ GET /accounts/:id
+- **Descripción:** Obtiene detalles de una cuenta específica.
+- **Response:**  
+    - `200 OK`: Objeto de la cuenta
+    - `404 Not Found`: Cuenta no existe
+    - `500 Internal Server Error`
 
-### AccountTypes
+### ✅ POST /accounts
+Crea una nueva cuenta.
 
-### MovementTypes
+**Body (JSON):**
+```json
+{
+  "userId": "ObjectId",
+  "name": "string",
+  "accountTypeId": "ObjectId",
+  "bankId": "ObjectId (opcional)",
+  "balance": "number (opcional)",
+  "nextPay": "number (opcional)"
+}
+```
 
-### Reports
+#### ✅ PUT /accounts/:id
+- **Descripción:** Actualiza una cuenta existente.
+- **Body:** Campos de la cuenta que desees actualizar
+- **Response:**  
+    - `200 OK`: Objeto de la cuenta actualizado
+    - `400 Bad Request`: Campos inválidos
+    - `404 Not Found`: Cuenta no existe
+    - `500 Internal Server Error`
 
-### Banks
+#### ✅ DELETE /accounts/:id
+- **Descripción:** Elimina o archiva una cuenta.
+- **Response:**  
+    - `200 OK`: Mensaje de éxito
+    - `404 Not Found`: Cuenta no existe
+    - `500 Internal Server Error`
 
-### Budgets
 
-### Periods
+## 🧪 Tests
 
-### Suggestions
+### Account
 
+#### Account Model
+- ✅ Verifica creación de cuentas válidas
+- ✅ Valida requerimiento de `userId`, `name` y `accountTypeId`
+- ✅ Verifica enumerado para `state`
+
+#### Account Service
+- ✅ Verifica lógica de creación de cuentas
+- ✅ Verifica lógica de actualización de cuentas
+- ✅ Verifica lógica de borrado y archivado
+
+#### Account Controller
+- ✅ Verifica status HTTP y respuestas JSON para: (`201 Created`, `400 Bad Request`, `404 Not Found`)
+  - Crear cuenta
+  - Listar cuentas
+  - Eliminar cuenta

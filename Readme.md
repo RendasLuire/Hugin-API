@@ -101,9 +101,20 @@ and action bears weight.
 
 #### Account Controller
 
-- ✅ Verify HTTP status and response: (`201 Created`, `400 Bad Request`, `404 Not Found`)
-  - Create account.
-  - List accounts.
-  - Delete account.
+- `testAccountsController`
+  - ✅ Validate Test Response.
+
+- `getAccounts`
+  - ✅ Check if return code `401 Unauthorized access`.
+  - ✅ Check return Accounts List.
+  - ✅ Check return code `500 Internal Server Error`.
+
+### Middlewares Tests
+
+#### Auth
+
+- `authMiddleware`
+  - ✅ Check if return code `401 Unauthorized access` when request don't have header.
+  - ✅ Check if return code `401 Unauthorized access` when token isn´t valid.
 
 ---

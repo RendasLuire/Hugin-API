@@ -43,7 +43,7 @@ describe("account.controller", () => {
 
       expect(res.status).toHaveBeenCalledWith(401);
       expect(res.json).toHaveBeenCalledWith({
-        data: {},
+        data: [],
         message: "Unauthorized access",
       });
     });
@@ -57,6 +57,7 @@ describe("account.controller", () => {
       } as any;
 
       const res = {
+        status: jest.fn().mockReturnThis(),
         json: jest.fn(),
       } as any;
 
@@ -84,7 +85,7 @@ describe("account.controller", () => {
 
       expect(res.status).toHaveBeenCalledWith(500);
       expect(res.json).toHaveBeenCalledWith({
-        data: {},
+        data: [],
         message: "Error retrieving accounts list",
       });
     });

@@ -22,7 +22,7 @@ export const getAccounts = async (req: Request, res: Response) => {
 
   if (!user) {
     res.status(401).json({
-      data: {},
+      data: [],
       message: "Unauthorized access",
     });
     return

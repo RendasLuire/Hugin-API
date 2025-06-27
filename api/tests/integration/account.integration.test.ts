@@ -25,7 +25,7 @@ describe("Accounts Integration", () => {
 
     expect(response.status).toBe(401);
     expect(response.body).toEqual({
-      data: {},
+      data: [],
       message: "No authorization header provided",
     });
   });

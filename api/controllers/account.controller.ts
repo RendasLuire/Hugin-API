@@ -3,11 +3,18 @@ import connectToDatabase from "../lib/mongodb";
 import { Account } from '../models/Account.model';
 import { Bank } from '../models/Bank.model'
 import { AccountType } from '../models/AccountType.model';
-import { testAccounts } from '../services/account.service';
+import { getAccountsForUser, testAccounts } from '../services/account.service';
 
 export const testAccountsController = (req: Request, res: Response) => {
-  const response = testAccounts();
-  res.json(response);
+  try {
+    const response = testAccounts();
+    res.json(response);
+  } catch (error) {
+    res.status(500).json({
+      data: {},
+      message: "Error in test accounts endpoint",
+    });
+  }
 }
 
 export const getAccounts = async (req: Request, res: Response) => {
@@ -22,26 +29,23 @@ export const getAccounts = async (req: Request, res: Response) => {
   }
 
   try {
-    await connectToDatabase();
-    const accounts = await Account.find({ userId: user.id, state: "active" })
-  .select('-__v -userId -updatedAt -state -deletedAt')
-  .populate({
-    path: 'bankId',
-    select: 'name logoUrl'
-  })
-  .populate({
-    path: 'accountTypeId',
-    select: 'name key icon color'
-  });
+    const accounts = await getAccountsForUser(user.id);
 
+    
+  if (!accounts || accounts.length === 0) {
+    res.status(400).json({
+      data: [],
+      message: "No accounts found for this user.",
+    });
+  }
 
-    res.json({
+    res.status(200).json({
       data: accounts,
       message: "Accounts List retrieved successfully",
     })
   } catch (error) {
     res.status(500).json({
-      data: {},
+      data: [],
       message: "Error retrieving accounts list",
     })
   }

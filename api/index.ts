@@ -24,9 +24,9 @@ app.get("/initialize", async (req, res) => {
   res.send("app initialized");
 });
 
+app.use("/accounts", accountRoutes);
 app.use("/users", usersRoutes);
 app.use("/auth", authRoutes);
-app.use("/accounts", accountRoutes);
 app.use("/account-types", accountTypeRoutes);
 app.use("/banks", bankRoutes);
 

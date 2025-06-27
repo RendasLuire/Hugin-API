@@ -1,4 +1,6 @@
+
 # Hugin API
+
 ## 🌑 The API – *The Engine Beneath the Runes*
 
 > *“It hums beneath the surface, unseen yet unyielding…”*
@@ -41,73 +43,67 @@ and action bears weight.
   "updatedAt": "Date"
 }
 ```
+
 ---
 
 ## 🌐 Routes
 
-### Accounts
+### Accounts Routes
+
+#### ✅ Get /accounts/test
+
+- **Description:** Response with a fake user.
+- **Response:**
+  - `200 OK`: Test account.
+  - `500 Internal Server Error`
+
 #### ✅ GET /accounts
-- **Descripción:** Obtiene todas las cuentas.
+
+- **Description:** Get all accounts relative to current user.
 - **Response:**  
-    - `200 OK`: Array de cuentas
-    - `404 Not Found`: No hay cuentas
-    - `500 Internal Server Error`
+  - `200 OK`: Accounts Array
+  - `401 Unauthorized access`
+  - `500 Internal Server Error`
 
 #### ✅ GET /accounts/:id
-- **Descripción:** Obtiene detalles de una cuenta específica.
+
+- **Description:** Get account.
 - **Response:**  
-    - `200 OK`: Objeto de la cuenta
-    - `404 Not Found`: Cuenta no existe
-    - `500 Internal Server Error`
+  - `200 OK`: Account data.
+  - `404 Not Found`: Account don´t exist.
+  - `500 Internal Server Error`
 
-### ✅ POST /accounts
-Crea una nueva cuenta.
-
-**Body (JSON):**
-```json
-{
-  "userId": "ObjectId",
-  "name": "string",
-  "accountTypeId": "ObjectId",
-  "bankId": "ObjectId (opcional)",
-  "balance": "number (opcional)",
-  "nextPay": "number (opcional)"
-}
-```
-
-#### ✅ PUT /accounts/:id
-- **Descripción:** Actualiza una cuenta existente.
-- **Body:** Campos de la cuenta que desees actualizar
-- **Response:**  
-    - `200 OK`: Objeto de la cuenta actualizado
-    - `400 Bad Request`: Campos inválidos
-    - `404 Not Found`: Cuenta no existe
-    - `500 Internal Server Error`
-
-#### ✅ DELETE /accounts/:id
-- **Descripción:** Elimina o archiva una cuenta.
-- **Response:**  
-    - `200 OK`: Mensaje de éxito
-    - `404 Not Found`: Cuenta no existe
-    - `500 Internal Server Error`
-
+---
 
 ## 🧪 Tests
 
-### Account
+### Account Tests
 
 #### Account Model
-- ✅ Verifica creación de cuentas válidas
-- ✅ Valida requerimiento de `userId`, `name` y `accountTypeId`
-- ✅ Verifica enumerado para `state`
+
+- ✅ Check valid accounts creation.
+- ✅ Validate requeriments `userId`, `name` y `accountTypeId`.
+- ✅ Validate info `state`.
+
+#### Account Repository
+
+- ✅ Validate Test Info.
+- ✅ Check return accounts.
 
 #### Account Service
-- ✅ Verifica lógica de creación de cuentas
-- ✅ Verifica lógica de actualización de cuentas
-- ✅ Verifica lógica de borrado y archivado
+
+- `testAccounts`
+  - ✅ Validate Test Response.
+
+- `getAccountsForUser`
+  - ✅ Check return accounts.
+  - ✅ Validate account is empty.
 
 #### Account Controller
-- ✅ Verifica status HTTP y respuestas JSON para: (`201 Created`, `400 Bad Request`, `404 Not Found`)
-  - Crear cuenta
-  - Listar cuentas
-  - Eliminar cuenta
+
+- ✅ Verify HTTP status and response: (`201 Created`, `400 Bad Request`, `404 Not Found`)
+  - Create account.
+  - List accounts.
+  - Delete account.
+
+---

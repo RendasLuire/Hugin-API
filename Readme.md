@@ -117,4 +117,10 @@ and action bears weight.
   - ✅ Check if return code `401 Unauthorized access` when request don't have header.
   - ✅ Check if return code `401 Unauthorized access` when token isn´t valid.
 
+### Utils Tests
+
+#### Init
+
+#### Users
+
 ---

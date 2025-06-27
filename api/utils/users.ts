@@ -7,6 +7,7 @@ import { Bank } from "../models/Bank.model";
 export async function createInitUserData(userId: Types.ObjectId) {
 
   await connectToDatabase();
+  //TODO Use repository function to check if user exists
   const existingAccounts = await Account.find({ userId });
 
   if (existingAccounts.length > 0) {
@@ -14,17 +15,20 @@ export async function createInitUserData(userId: Types.ObjectId) {
     return;
   }
 
+  //TODO Use repository function to check if account type exists
   const accountType = await AccountType.findOne({key: "primigenius"});
   if (!accountType) {
     console.error("Account type 'primigenius' not found. Cannot create initial account.");
     return;
   }
 
+  //TODO Use repository function to check if bank exists
   const initBank = await Bank.create({
     userId,
     name: "Testamento"
   });
 
+  //TODO Use repository function to create initial account
   await Account.create({
     userId,
     name: "Arca Primordial",
@@ -45,8 +49,10 @@ export async function createInitUserData(userId: Types.ObjectId) {
 export async function deleteUserData(userId: Types.ObjectId) {
   await connectToDatabase();
   
+  //TODO Use repository function to delete account data
   await Account.deleteMany({ userId });
 
+  //TODO Use repository function to delete bank data
   await Bank.deleteMany({ userId });
 
   console.log("User data deleted successfully.");

@@ -1,16 +1,15 @@
 import connectToDatabase from "../lib/mongodb";
-import { User } from "../models/User.model";
 import { AccountType } from "../models/AccountType.model";
 import bcrypt from "bcryptjs";
-import { createInitUserData } from "./users";
+import { createInitUserData } from "../utils/users";
 import { accountTypes } from "../data/accountType.data";
+import { createUser, getUserCount } from "../repositories/user.repository";
 
-export async function initializeSystem() {
+export const initializeSystem = async () => {
   await connectToDatabase();
 
-  //TODO Use repository funtion to check if users exist
-  const existingUsers = await User.find();
-  if (existingUsers.length > 0) {
+  const existingUsers = await getUserCount();
+  if (existingUsers > 0) {
     console.log("Users already exist. Skipping initialization.");
     return;
   }
@@ -36,16 +35,16 @@ export async function initializeSystem() {
 
   const hashedPassword = await bcrypt.hash("admin123", 10);
 
-  //TODO Use repository function to create the initial user
-  const initUser = await User.create({
+  const initUser = {
     name: "Admin",
     email: "admin@example.com",
     passwordHash: hashedPassword,
     role: "admin",
-  });
+  };
+
+  const newUser = await createUser(initUser);
+
   console.log("Admin user created successfully.");
 
-  await createInitUserData(initUser._id);
-
-
+  await createInitUserData(newUser._id);
 }

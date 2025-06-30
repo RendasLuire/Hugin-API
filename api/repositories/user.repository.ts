@@ -1,6 +1,6 @@
 import connectToDatabase from "../lib/mongodb";
 import { User } from "../models/User.model";
-import { UserData } from "../types/user.type";
+import { UserInputData } from "../types/user.type";
 
 export const getUserCount = async (): Promise<number> => {
     await connectToDatabase();
@@ -9,8 +9,27 @@ export const getUserCount = async (): Promise<number> => {
 }
 
 
-export const createUser = async (userData: Partial<UserData>) => {
+export const createUser = async (userData: Partial<UserInputData>) => {
   await connectToDatabase();
   const user = new User(userData);
   return await user.save();
+}
+
+export const getAdminUser = async () => {
+  await connectToDatabase();
+
+  const adminUser = await User.findOne({ role: "admin" });
+
+  return adminUser;
+}
+
+export const getUserById = async (userId: string) => {
+  await connectToDatabase();
+
+  const user = await User.findById(userId);
+
+  if (!user) {
+    throw new Error("User not found");
+  }
+  return user;
 }

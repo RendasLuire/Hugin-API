@@ -1,6 +1,6 @@
 import { Schema, model, Types } from "mongoose";
 
-const BankSchema = new Schema({
+export const BankSchema = new Schema({
   name: { type: String, required: true },
   logoUrl: { type: String, default: "" },
   state: {type: String, enum: ['active', 'archived', 'deleted'], default: "active"},

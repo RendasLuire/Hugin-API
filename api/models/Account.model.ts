@@ -1,6 +1,6 @@
 import { Schema, model, Types } from "mongoose";
 
-const AccountSchema = new Schema({
+export const AccountSchema = new Schema({
   userId: { type: Types.ObjectId, ref: "User", required: true },
   bankId: { type: Types.ObjectId, ref: "Bank" },
   name: { type: String, required: true },

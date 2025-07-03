@@ -24,6 +24,38 @@ and action bears weight.
 
 ---
 
+## Instalation
+
+### Requeriments
+
+- Node JS
+- MongoDB DataBase
+
+### Commands
+
+```CMD
+npm install
+```
+
+### Initialization
+
+The first time that you use this api, needs initializate for have an admin user.
+
+You only have to use /initializate endpoint, then admin user will be created with env data.
+
+---
+
+## Configuration
+Add env file
+
+```env
+MONGODB_URI=mongodb+srv:******
+ADMIN_EMAIL=admin@example.com
+ADMIN_PASSWORD=admin123
+```
+
+---
+
 ## 📦 Data Models
 
 ### Accounts
@@ -47,6 +79,14 @@ and action bears weight.
 ---
 
 ## 🌐 Routes
+
+### General
+
+#### ✅ Get /
+
+- **Description:** Response with a message only.
+- **Response:**
+  - `200 OK`: Express on Vercel with TS.
 
 ### Accounts Routes
 
@@ -117,10 +157,11 @@ and action bears weight.
   - ✅ Check if return code `401 Unauthorized access` when request don't have header.
   - ✅ Check if return code `401 Unauthorized access` when token isn´t valid.
 
-### Utils Tests
+#### Config
 
-#### Init
-
-#### Users
+- `registerMiddlewares`
+  - ✅ Check Express
+  - ✅ Check Cors
+  - ✅ Check Cookie Parser
 
 ---

@@ -1,4 +1,4 @@
-import { createBank } from "../repositories/bank.repository";
+import { createBank, deleteBankByUserId } from "../repositories/bank.repository";
 import { ObjectId } from "mongodb";
 
 export const createDefaultBank = async (userId: string) => {
@@ -7,5 +7,13 @@ export const createDefaultBank = async (userId: string) => {
     name: "Testamento"
   }
 
-  await createBank(initialBankData);
+  const newBank =  await createBank(initialBankData);
+
+  return newBank;
+}
+
+export const deleteBankByUser = async (userId: string) => {
+  const response = await deleteBankByUserId(userId);
+
+  return response;
 }

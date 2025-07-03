@@ -24,5 +24,5 @@ export const checkPrimigeniusAccountType = async () => {
     return false;
   }
   
-  return true;
+  return primigeniusType;
 }

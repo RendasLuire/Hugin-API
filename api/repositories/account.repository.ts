@@ -27,10 +27,15 @@ export const getAccountsByUserId = async (userId: string) => {
     return accounts;
 }
 
-//TODO: Implement the function to get account by id.
+export const createAccount = async (accountData: Object) => {
+    await connectToDatabase();
+    const account = new Account(accountData);
+    const newAccount = await account.save();
+    return newAccount;
+}
 
-//TODO: Implement the function to create a new account.
-
-//TODO: Implement the function to update an account by id.
-
-//TODO: Implement the function to delete an account by id.
+export const deleteAccountsByUserId = async (userId: string) => {
+    await connectToDatabase();
+    const result = await Account.deleteMany({ userId });
+    return result;
+}

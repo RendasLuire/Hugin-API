@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { initializeSystem } from "../services/init.service";
+import { initializeSystem } from "../services/system.service";
 
 export const healthCheck = (req: Request, res: Response) => {
   res.status(200).json({

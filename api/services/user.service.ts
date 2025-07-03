@@ -1,7 +1,6 @@
-import { createUser, getAdminUser, getUserById } from "../repositories/user.repository";
+import { createUser, getAdminUser} from "../repositories/user.repository";
 import { UserInputData } from "../types/user.type";
 import bcrypt from "bcryptjs";
-import { checkPrimigeniusAccountType } from "./accountType.service";
 
 
 export const createAdminUser = async () => {
@@ -29,19 +28,3 @@ export const createAdminUser = async () => {
   return newUser;
 }
 
-export const loadNewUserData = async (userId: string) => {
-  const user = await getUserById(userId);
-  if (!user) {
-    console.error("User not found. Cannot load new user data.");
-    return;
-  }
-
-  const primigeniusType = await checkPrimigeniusAccountType();
-
-  if (!primigeniusType) {
-    console.error("Primigenius account type not found. Cannot load new user data.");
-    return;
-  }
-
-  
-}

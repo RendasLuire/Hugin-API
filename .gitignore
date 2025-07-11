@@ -1,7 +1,14 @@
-.node_modules
+# Ignorar node_modules
+node_modules/
+
+# Ignorar lock file
 package-lock.json
-.vercel
-node_modules\*
-node_modules
-build
+
+# Ignorar carpetas específicas
+.vercel/
+build/
+.documents/
+documents/
+
+# Ignorar archivos de entorno
 .env

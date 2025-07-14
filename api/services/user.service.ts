@@ -11,8 +11,7 @@ export const createAdminUser = async () => {
   const adminUserExist = await getAdminUser();
 
   if (adminUserExist) {
-    console.log("Admin user already exists. Skipping creation.");
-    return adminUserExist;
+    return false;
   }
 
   const adminUser: UserInputData = {
@@ -23,7 +22,6 @@ export const createAdminUser = async () => {
   }
 
   const newUser = await createUser(adminUser);
-  console.log("Admin user created successfully:", newUser.email);
 
   return newUser;
 }

@@ -7,30 +7,28 @@ import { getUserById } from "../repositories/user.repository";
 export const loadNewUserData = async (userId: string) => {
   const user = await getUserById(userId);
   if (!user) {
-    console.error("User not found. Cannot load new user data.");
-    return;
+    return false;
   }
 
   const primigeniusType = await checkPrimigeniusAccountType();
 
   if (!primigeniusType) {
-    console.error("Primigenius account type not found. Cannot load new user data.");
-    return;
+    return false;
   }
 
   const initialBankData = await createDefaultBank(userId);
 
   if (!initialBankData) {
-    console.error("Failed to create initial bank data. Cannot load new user data.");
-    return;
+    return false;
   }
 
   const initialAccount = await createInitialAccount(user._id, primigeniusType._id, initialBankData._id);
 
   if (!initialAccount) {
-    console.error("Failed to create initial account. Cannot load new user data.");
-    return;
+    return false;
   }
+
+  return true
 }
 
 export const deleteUserData = async (userId: string) => {

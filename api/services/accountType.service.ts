@@ -5,22 +5,20 @@ export const defineDefaultAccountTypes = async () => {
 
   const existingAccountTypes = await getAccountTypeCount();
   if (existingAccountTypes > 0) {
-    console.log("Account types already exist. Skipping initialization.");
-    return;
+    return false;
   }
 
   for(const type of accountTypes) {
     await createAccountType(type);
   }
 
-  console.log("Account types initialized successfully.");
+  return true
 }
 
 export const checkPrimigeniusAccountType = async () => {
 
   const primigeniusType = await getAccountTypeByKey("primigenius");
   if (!primigeniusType) {
-    console.error("Primigenius account type not found. Please define default account types first.");
     return false;
   }
   

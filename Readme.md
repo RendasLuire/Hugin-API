@@ -208,14 +208,14 @@ and action bears weight.
 
 #### ✅Health Check Route
 
-- **Descripción:**
-Este endpoint permite verificar si la API está en línea. Útil para pruebas básicas de disponibilidad.
+- **Description:**
+This endpoint is to check if api is online.
 
 - **URL:** `/`
-- **Método:** `GET`
+- **Method:** `GET`
 - **Headers:**
 
-* **✅Respuesta exitosa `200 OK`**
+* **✅Response successfully `200 OK`**
 
 ```JSON
 {
@@ -224,18 +224,19 @@ Este endpoint permite verificar si la API está en línea. Útil para pruebas b�
 }  
 ```
 
-- **❌Errores comunes:**
-  - `404` - Ruta no encontrada
+- **Common responses:**
+  - `404` - Not found.
 
 #### ✅Initialize Route
 
-- **Descripción:**
+- **Description:**
+This endpoint is necesary to initialize enviroment to api, creating an admin user.
 
 - **URL:** `/`
-- **Método:** `GET`
+- **Method:** `GET`
 - **Headers:**
 
-* **✅Respuesta exitosa `202 Accepted`**
+* **✅Response successfully `202 Accepted`**
 
 ```JSON
 {
@@ -244,21 +245,22 @@ Este endpoint permite verificar si la API está en línea. Útil para pruebas b�
 }  
 ```
 
-- **❌Errores comunes:**
-  - `404` - Ruta no encontrada
+- **Common responses:**
+  - `200` - The app has been initialized.
+  - `404` - Not found.
   - `500` - Internal Server Error
 
 ### 😎Users Routes
 
 #### ✅Test User Router
 
-- **Descripción:**
+- **Description:**
 
 - **URL:** `/`
-- **Método:** `GET`
+- **Method:** `GET`
 - **Headers:**
 
-* **✅Respuesta exitosa `200 OK`**
+* **✅Response successfully `200 OK`**
 
 ```JSON
 {
@@ -266,18 +268,18 @@ Este endpoint permite verificar si la API está en línea. Útil para pruebas b�
 }  
 ```
 
-- **❌Errores comunes:**
-  - `404` - Ruta no encontrada
+- **Common responses:**
+  - `404` - Not found.
 
 #### ✅Register User Router
 
-- **Descripción:**
+- **Description:**
 
 - **URL:** `/`
-- **Método:** `GET`
+- **Method:** `GET`
 - **Headers:**
 
-* **✅Respuesta exitosa `200 OK`**
+* **✅Response successfully `200 OK`**
 
 ```JSON
 {
@@ -285,18 +287,18 @@ Este endpoint permite verificar si la API está en línea. Útil para pruebas b�
 }  
 ```
 
-- **❌Errores comunes:**
-  - `404` - Ruta no encontrada
+- **Common responses:**
+  - `404` - Not found.
 
 #### ✅Find User Router
 
-- **Descripción:**
+- **Description:**
 
 - **URL:** `/`
-- **Método:** `GET`
+- **Method:** `GET`
 - **Headers:**
 
-* **✅Respuesta exitosa `200 OK`**
+* **✅Response successfully `200 OK`**
 
 ```JSON
 {
@@ -304,18 +306,18 @@ Este endpoint permite verificar si la API está en línea. Útil para pruebas b�
 }  
 ```
 
-- **❌Errores comunes:**
-  - `404` - Ruta no encontrada
+- **Common responses:**
+  - `404` - Not found.
 
 #### ✅List all Users Router
 
-- **Descripción:**
+- **Description:**
 
 - **URL:** `/`
-- **Método:** `GET`
+- **Method:** `GET`
 - **Headers:**
 
-* **✅Respuesta exitosa `200 OK`**
+* **✅Response successfully `200 OK`**
 
 ```JSON
 {
@@ -323,18 +325,18 @@ Este endpoint permite verificar si la API está en línea. Útil para pruebas b�
 }  
 ```
 
-- **❌Errores comunes:**
-  - `404` - Ruta no encontrada
+- **Common responses:**
+  - `404` - Not found.
 
 #### ✅Update User Router
 
-- **Descripción:**
+- **Description:**
 
 - **URL:** `/`
-- **Método:** `GET`
+- **Method:** `GET`
 - **Headers:**
 
-* **✅Respuesta exitosa `200 OK`**
+* **✅Response successfully `200 OK`**
 
 ```JSON
 {
@@ -342,18 +344,18 @@ Este endpoint permite verificar si la API está en línea. Útil para pruebas b�
 }  
 ```
 
-- **❌Errores comunes:**
-  - `404` - Ruta no encontrada
+- **Common responses:**
+  - `404` - Not found.
 
 #### ✅Delete User Router
 
-- **Descripción:**
+- **Description:**
 
 - **URL:** `/`
-- **Método:** `GET`
+- **Method:** `GET`
 - **Headers:**
 
-* **✅Respuesta exitosa `200 OK`**
+* **✅Response successfully `200 OK`**
 
 ```JSON
 {
@@ -361,21 +363,21 @@ Este endpoint permite verificar si la API está en línea. Útil para pruebas b�
 }  
 ```
 
-- **❌Errores comunes:**
-  - `404` - Ruta no encontrada
+- **Common responses:**
+  - `404` - Not found.
 
 ### 👤Accounts Routes
 
 #### ✅Test Account Route
 
-- **Descripción:**
+- **Description:**
 Response with a fake user.
 
 - **URL:** `/accounts/test`
-- **Método:** `GET`
+- **Method:** `GET`
 - **Headers:**
 
-* **✅Respuesta exitosa `200 OK`**
+* **✅Response successfully `200 OK`**
 
 ```JSON
 {
@@ -383,21 +385,21 @@ Response with a fake user.
 }  
 ```
 
-- **❌Errores comunes:**
-  - `404` - Ruta no encontrada.
+- **Common responses:**
+  - `404` - Not found..
   - `401` - Unauthorized access.
   - `500` - Internal Server Error.
 
 #### ✅List all Accounts Route
 
-- **Descripción:**
+- **Description:**
 Get all accounts relative to current user.
 
 - **URL:** `/accounts`
-- **Método:** `GET`
+- **Method:** `GET`
 - **Headers:**
 
-* **✅Respuesta exitosa `200 OK`**
+* **✅Response successfully `200 OK`**
 
 ```JSON
 {
@@ -405,21 +407,21 @@ Get all accounts relative to current user.
 }  
 ```
 
-- **❌Errores comunes:**
-  - `404` - Ruta no encontrada.
+- **Common responses:**
+  - `404` - Not found..
   - `401` - Unauthorized access.
   - `500` - Internal Server Error.
 
 #### ✅Find Account Route
 
-- **Descripción:**
+- **Description:**
 Get account.
 
 - **URL:** `/accounts/:id`
-- **Método:** `GET`
+- **Method:** `GET`
 - **Headers:**
 
-* **✅Respuesta exitosa `200 OK`**
+* **✅Response successfully `200 OK`**
 
 ```JSON
 {
@@ -427,8 +429,8 @@ Get account.
 }  
 ```
 
-- **❌Errores comunes:**
-  - `404` - Ruta no encontrada
+- **Common responses:**
+  - `404` - Not found.
   - `500` - Internal Server Error
 
 #### ✅Register Account Route
@@ -441,13 +443,13 @@ Get account.
 
 #### ✅Test Bank Router
 
-- **Descripción:**
+- **Description:**
 
 - **URL:** `/`
-- **Método:** `GET`
+- **Method:** `GET`
 - **Headers:**
 
-* **✅Respuesta exitosa `200 OK`**
+* **✅Response successfully `200 OK`**
 
 ```JSON
 {
@@ -455,18 +457,18 @@ Get account.
 }  
 ```
 
-- **❌Errores comunes:**
-  - `404` - Ruta no encontrada
+- **Common responses:**
+  - `404` - Not found.
 
 #### ✅Register Bank Router
 
-- **Descripción:**
+- **Description:**
 
 - **URL:** `/`
-- **Método:** `GET`
+- **Method:** `GET`
 - **Headers:**
 
-* **✅Respuesta exitosa `200 OK`**
+* **✅Response successfully `200 OK`**
 
 ```JSON
 {
@@ -474,18 +476,18 @@ Get account.
 }  
 ```
 
-- **❌Errores comunes:**
-  - `404` - Ruta no encontrada
+- **Common responses:**
+  - `404` - Not found.
 
 #### ✅Find Bank Router
 
-- **Descripción:**
+- **Description:**
 
 - **URL:** `/`
-- **Método:** `GET`
+- **Method:** `GET`
 - **Headers:**
 
-* **✅Respuesta exitosa `200 OK`**
+* **✅Response successfully `200 OK`**
 
 ```JSON
 {
@@ -493,18 +495,18 @@ Get account.
 }  
 ```
 
-- **❌Errores comunes:**
-  - `404` - Ruta no encontrada
+- **Common responses:**
+  - `404` - Not found.
 
 #### ✅List all Banks Router
 
-- **Descripción:**
+- **Description:**
 
 - **URL:** `/`
-- **Método:** `GET`
+- **Method:** `GET`
 - **Headers:**
 
-* **✅Respuesta exitosa `200 OK`**
+* **✅Response successfully `200 OK`**
 
 ```JSON
 {
@@ -512,18 +514,18 @@ Get account.
 }  
 ```
 
-- **❌Errores comunes:**
-  - `404` - Ruta no encontrada
+- **Common responses:**
+  - `404` - Not found.
 
 #### ✅Update Bank Router
 
-- **Descripción:**
+- **Description:**
 
 - **URL:** `/`
-- **Método:** `GET`
+- **Method:** `GET`
 - **Headers:**
 
-* **✅Respuesta exitosa `200 OK`**
+* **✅Response successfully `200 OK`**
 
 ```JSON
 {
@@ -531,18 +533,18 @@ Get account.
 }  
 ```
 
-- **❌Errores comunes:**
-  - `404` - Ruta no encontrada
+- **Common responses:**
+  - `404` - Not found.
 
 #### ✅Delete Bank Router
 
-- **Descripción:**
+- **Description:**
 
 - **URL:** `/`
-- **Método:** `GET`
+- **Method:** `GET`
 - **Headers:**
 
-* **✅Respuesta exitosa `200 OK`**
+* **✅Response successfully `200 OK`**
 
 ```JSON
 {
@@ -550,20 +552,20 @@ Get account.
 }  
 ```
 
-- **❌Errores comunes:**
-  - `404` - Ruta no encontrada
+- **Common responses:**
+  - `404` - Not found.
 
 ### 💵Movement Routes
 
 #### ✅Test Movement Router
 
-- **Descripción:**
+- **Description:**
 
 - **URL:** `/`
-- **Método:** `GET`
+- **Method:** `GET`
 - **Headers:**
 
-* **✅Respuesta exitosa `200 OK`**
+* **✅Response successfully `200 OK`**
 
 ```JSON
 {
@@ -571,18 +573,18 @@ Get account.
 }  
 ```
 
-- **❌Errores comunes:**
-  - `404` - Ruta no encontrada
+- **Common responses:**
+  - `404` - Not found.
 
 #### ✅Register Movement Router
 
-- **Descripción:**
+- **Description:**
 
 - **URL:** `/`
-- **Método:** `GET`
+- **Method:** `GET`
 - **Headers:**
 
-* **✅Respuesta exitosa `200 OK`**
+* **✅Response successfully `200 OK`**
 
 ```JSON
 {
@@ -590,18 +592,18 @@ Get account.
 }  
 ```
 
-- **❌Errores comunes:**
-  - `404` - Ruta no encontrada
+- **Common responses:**
+  - `404` - Not found.
 
 #### ✅Find Movement Router
 
-- **Descripción:**
+- **Description:**
 
 - **URL:** `/`
-- **Método:** `GET`
+- **Method:** `GET`
 - **Headers:**
 
-* **✅Respuesta exitosa `200 OK`**
+* **✅Response successfully `200 OK`**
 
 ```JSON
 {
@@ -609,18 +611,18 @@ Get account.
 }  
 ```
 
-- **❌Errores comunes:**
-  - `404` - Ruta no encontrada
+- **Common responses:**
+  - `404` - Not found.
 
 #### ✅List all Movements Router
 
-- **Descripción:**
+- **Description:**
 
 - **URL:** `/`
-- **Método:** `GET`
+- **Method:** `GET`
 - **Headers:**
 
-* **✅Respuesta exitosa `200 OK`**
+* **✅Response successfully `200 OK`**
 
 ```JSON
 {
@@ -628,18 +630,18 @@ Get account.
 }  
 ```
 
-- **❌Errores comunes:**
-  - `404` - Ruta no encontrada
+- **Common responses:**
+  - `404` - Not found.
 
 #### ✅Update Movement Router
 
-- **Descripción:**
+- **Description:**
 
 - **URL:** `/`
-- **Método:** `GET`
+- **Method:** `GET`
 - **Headers:**
 
-* **✅Respuesta exitosa `200 OK`**
+* **✅Response successfully `200 OK`**
 
 ```JSON
 {
@@ -647,18 +649,18 @@ Get account.
 }  
 ```
 
-- **❌Errores comunes:**
-  - `404` - Ruta no encontrada
+- **Common responses:**
+  - `404` - Not found.
 
 #### ✅Delete Movement Router
 
-- **Descripción:**
+- **Description:**
 
 - **URL:** `/`
-- **Método:** `GET`
+- **Method:** `GET`
 - **Headers:**
 
-* **✅Respuesta exitosa `200 OK`**
+* **✅Response successfully `200 OK`**
 
 ```JSON
 {
@@ -666,8 +668,8 @@ Get account.
 }  
 ```
 
-- **❌Errores comunes:**
-  - `404` - Ruta no encontrada
+- **Common responses:**
+  - `404` - Not found.
 
 ---
 

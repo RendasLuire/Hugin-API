@@ -3,12 +3,20 @@ import { defineDefaultAccountTypes } from "./accountType.service";
 import { loadNewUserData } from "./userSetup.service";
 
 export const initializeSystem = async () => {
-  await defineDefaultAccountTypes()
+  const accountTypes = await defineDefaultAccountTypes()
 
+  if(!accountTypes) return false
+  
   // TODO Register Default Category Type
-
+  
   const newUser = await createAdminUser();
+  
+  if(!newUser) return false
 
   const stringUserId = newUser._id.toString();
-  await loadNewUserData(stringUserId);
+  const newUserData = await loadNewUserData(stringUserId);
+
+  if(!newUserData) return false
+
+  return true
 }

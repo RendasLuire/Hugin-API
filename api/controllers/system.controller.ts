@@ -11,7 +11,15 @@ export const healthCheck = (req: Request, res: Response) => {
 export const initializeApp = async (req: Request, res: Response) => {
 
   try {
-    await initializeSystem();
+    const result = await initializeSystem();
+
+    if(!result){
+      res.status(200).json({
+        data:[],
+        message: "System has been initialized."
+      })
+    }
+
     res.status(202).json({
       data: [],
       message: "App initialized.",

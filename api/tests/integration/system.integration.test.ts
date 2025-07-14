@@ -47,5 +47,16 @@ describe('System Integration - ', () => {
       expect(response.status).toBe(expectedStatus);
       expect(response.body).toEqual(expectedBody);
     });
+     it('should returns 200 when system has been initialized.', async () => {
+      const expectedStatus = 200
+      const expectedBody = {
+        data: [],
+        message: 'System has been initialized.',
+      }
+
+      const response = await request(app).get('/initialize');
+      expect(response.status).toBe(expectedStatus);
+      expect(response.body).toEqual(expectedBody);
+    });
   })
 });

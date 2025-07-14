@@ -61,7 +61,7 @@
       - [✅Update Movement Router](#update-movement-router)
       - [✅Delete Movement Router](#delete-movement-router)
   - [🧪Tests](#tests)
-    - [�System Test](#system-test)
+    - [🔧System Test](#system-test)
     - [👤Account Tests](#account-tests)
       - [Account Model](#account-model-1)
       - [Account Repository](#account-repository)
@@ -195,9 +195,10 @@ and action bears weight.
 
 ### 👾Category Type Model
 
-| name | description       | type   | default values | unique | required | Enum | Logic Restrictions |
-| ---- | ----------------- | ------ | -------------- | ------ | -------- | ---- | ------------------ |
-| name | Name to identify. | String |       NO       |   NO   |   YES    |  NO  |       NO           |
+|     name       | description                       | type   | default values | unique | required |                      Enum                          | Logic Restrictions |
+| -------------- | --------------------------------- | ------ | -------------- | ------ | -------- | -------------------------------------------------- | ------------------ |
+|     name       | Name to identify.                 | String |       NO       |   NO   |   YES    |                       NO                           |       NO           |
+| classification | Denomination of type to movement. | String |       NO       |   NO   |   YES    |  Necessary, Desirable, Optional, Unnecessary, Bad  |       NO           |
 
 ---
 
@@ -218,6 +219,7 @@ Este endpoint permite verificar si la API está en línea. Útil para pruebas b�
 
 ```JSON
 {
+  "data": [],
   "message": "Express on Vercel with TS."
 }  
 ```
@@ -237,12 +239,14 @@ Este endpoint permite verificar si la API está en línea. Útil para pruebas b�
 
 ```JSON
 {
-  
+  "data": [],
+  "message": "App initialized."
 }  
 ```
 
 - **❌Errores comunes:**
   - `404` - Ruta no encontrada
+  - `500` - Internal Server Error
 
 ### 😎Users Routes
 

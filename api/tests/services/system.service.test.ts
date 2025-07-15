@@ -1,10 +1,15 @@
 import { defineDefaultAccountTypes } from "../../services/accountType.service"
+import { createDefaultCategory } from "../../services/category.service";
 import { initializeSystem } from "../../services/system.service"
 import { createAdminUser } from "../../services/user.service"
 import { loadNewUserData } from "../../services/userSetup.service"
 
 jest.mock("../../services/accountType.service", () => ({
   defineDefaultAccountTypes: jest.fn(),
+}));
+
+jest.mock("../../services/category.service", () => ({
+  createDefaultCategory: jest.fn(),
 }));
 
 jest.mock("../../services/user.service", () => ({
@@ -24,14 +29,16 @@ describe('System.service', () => {
   describe('initializeSystem()', () => {
     it('should return true if all steps complete successfully', async () => {
       (defineDefaultAccountTypes as jest.Mock).mockResolvedValue(true);
+      (createDefaultCategory as jest.Mock).mockResolvedValue(true);
     (createAdminUser as jest.Mock).mockResolvedValue({ _id: "user123" });
     (loadNewUserData as jest.Mock).mockResolvedValue(true);
     const expectedResponse = true
     
     const response = await initializeSystem()
     
-      expect.assertions(4);
+      expect.assertions(5);
       expect(defineDefaultAccountTypes).toHaveBeenCalled()
+      expect(createDefaultCategory).toHaveBeenCalled()
       expect(createAdminUser).toHaveBeenCalled()
       expect(loadNewUserData).toHaveBeenCalled()
       expect(response).toBe(expectedResponse)
@@ -45,19 +52,35 @@ describe('System.service', () => {
 
     expect.assertions(3);
     expect(defineDefaultAccountTypes).toHaveBeenCalled();
-    expect(createAdminUser).not.toHaveBeenCalled();
+    expect(createDefaultCategory).not.toHaveBeenCalled();
     expect(result).toBe(expectedResponse);
     })
 
-    it("should return false if createAdminUser fails", async () => {
+    it("should return false if createDefaultCategory fails", async () => {
     (defineDefaultAccountTypes as jest.Mock).mockResolvedValue(true);
-    (createAdminUser as jest.Mock).mockResolvedValue(null);
+    (createDefaultCategory as jest.Mock).mockResolvedValue(false);
     const expectedResponse = false
 
     const result = await initializeSystem();
 
     expect.assertions(4);
     expect(defineDefaultAccountTypes).toHaveBeenCalled();
+    expect(createDefaultCategory).toHaveBeenCalled();
+    expect(createAdminUser).not.toHaveBeenCalled();
+    expect(result).toBe(expectedResponse);
+  });
+
+    it("should return false if createAdminUser fails", async () => {
+    (defineDefaultAccountTypes as jest.Mock).mockResolvedValue(true);
+    (createDefaultCategory as jest.Mock).mockResolvedValue(true);
+    (createAdminUser as jest.Mock).mockResolvedValue(null);
+    const expectedResponse = false
+
+    const result = await initializeSystem();
+
+    expect.assertions(5);
+    expect(defineDefaultAccountTypes).toHaveBeenCalled();
+    expect(createDefaultCategory).toHaveBeenCalled()
     expect(createAdminUser).toHaveBeenCalled();
     expect(loadNewUserData).not.toHaveBeenCalled();
     expect(result).toBe(expectedResponse);
@@ -65,14 +88,16 @@ describe('System.service', () => {
 
     it("should return false if loadNewUserData fails", async () => {
     (defineDefaultAccountTypes as jest.Mock).mockResolvedValue(true);
+    (createDefaultCategory as jest.Mock).mockResolvedValue(true);
     (createAdminUser as jest.Mock).mockResolvedValue({ _id: "user123" });
     (loadNewUserData as jest.Mock).mockResolvedValue(null);
     const expectedResponse = false
 
     const result = await initializeSystem();
 
-    expect.assertions(4);
+    expect.assertions(5);
     expect(defineDefaultAccountTypes).toHaveBeenCalled();
+    expect(createDefaultCategory).toHaveBeenCalled()
     expect(createAdminUser).toHaveBeenCalled();
     expect(loadNewUserData).toHaveBeenCalledWith("user123");
     expect(result).toBe(expectedResponse);

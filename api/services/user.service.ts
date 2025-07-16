@@ -23,6 +23,10 @@ export const createAdminUser = async () => {
 
   const newUser = await createUser(adminUser);
 
+  if(!newUser) {
+    return false
+  }
+
   return newUser;
 }
 

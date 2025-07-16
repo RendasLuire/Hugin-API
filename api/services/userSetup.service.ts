@@ -32,9 +32,14 @@ export const loadNewUserData = async (userId: string) => {
 }
 
 export const deleteUserData = async (userId: string) => {
-  await deleteAccountsByUser(userId)
 
-  await deleteBankByUser(userId);
+  try {
+    await deleteAccountsByUser(userId)
+    await deleteBankByUser(userId);
+  
+    return true
+  } catch (error) {
+    return false
+  }
 
-  console.log("User data deleted successfully.");
 }

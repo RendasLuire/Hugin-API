@@ -29,4 +29,3 @@ export const createAdminUser = async () => {
 
   return newUser;
 }
-

@@ -1,7 +1,7 @@
-import { createUser, getAdminUser } from "../../repositories/user.repository"
-import { createAdminUser } from "../../services/user.service"
+import { createUser, getAdminUser } from "../../../repositories/user.repository"
+import { createAdminUser } from "../../../services/user.service"
 
-jest.mock("../../repositories/user.repository", () => ({
+jest.mock("../../../repositories/user.repository", () => ({
   getAdminUser: jest.fn(),
   createUser: jest.fn()
 }))

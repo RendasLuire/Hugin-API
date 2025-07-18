@@ -10,5 +10,7 @@ build/
 .documents/
 documents/
 
+coverage/
+
 # Ignorar archivos de entorno
 .env

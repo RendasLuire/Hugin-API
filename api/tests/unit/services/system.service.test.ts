@@ -1,22 +1,22 @@
-import { defineDefaultAccountTypes } from "../../services/accountType.service"
-import { createDefaultCategory } from "../../services/category.service";
-import { initializeSystem } from "../../services/system.service"
-import { createAdminUser } from "../../services/user.service"
-import { loadNewUserData } from "../../services/userSetup.service"
+import { defineDefaultAccountTypes } from "../../../services/accountType.service"
+import { createDefaultCategory } from "../../../services/category.service";
+import { initializeSystem } from "../../../services/system.service"
+import { createAdminUser } from "../../../services/user.service"
+import { loadNewUserData } from "../../../services/userSetup.service"
 
-jest.mock("../../services/accountType.service", () => ({
+jest.mock("../../../services/accountType.service", () => ({
   defineDefaultAccountTypes: jest.fn(),
 }));
 
-jest.mock("../../services/category.service", () => ({
+jest.mock("../../../services/category.service", () => ({
   createDefaultCategory: jest.fn(),
 }));
 
-jest.mock("../../services/user.service", () => ({
+jest.mock("../../../services/user.service", () => ({
   createAdminUser: jest.fn(),
 }));
 
-jest.mock("../../services/userSetup.service", () => ({
+jest.mock("../../../services/userSetup.service", () => ({
   loadNewUserData: jest.fn(),
 }));
 

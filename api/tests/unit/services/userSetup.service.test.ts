@@ -1,24 +1,24 @@
-import { getUserById } from "../../repositories/user.repository"
-import { createInitialAccount, deleteAccountsByUser } from "../../services/account.service"
-import { checkPrimigeniusAccountType } from "../../services/accountType.service"
-import { createDefaultBank, deleteBankByUser } from "../../services/bank.service"
-import { deleteUserData, loadNewUserData } from "../../services/userSetup.service"
+import { getUserById } from "../../../repositories/user.repository"
+import { createInitialAccount, deleteAccountsByUser } from "../../../services/account.service"
+import { checkPrimigeniusAccountType } from "../../../services/accountType.service"
+import { createDefaultBank, deleteBankByUser } from "../../../services/bank.service"
+import { deleteUserData, loadNewUserData } from "../../../services/userSetup.service"
 
-jest.mock("../../services/accountType.service", () => ({
+jest.mock("../../../services/accountType.service", () => ({
   checkPrimigeniusAccountType: jest.fn()
 }))
 
-jest.mock("../../services/bank.service", () => ({
+jest.mock("../../../services/bank.service", () => ({
   createDefaultBank: jest.fn(),
   deleteBankByUser: jest.fn()
 }))
 
-jest.mock("../../services/account.service", () => ({
+jest.mock("../../../services/account.service", () => ({
   createInitialAccount: jest.fn(),
   deleteAccountsByUser: jest.fn()
 }))
 
-jest.mock("../../repositories/user.repository", () => ({
+jest.mock("../../../repositories/user.repository", () => ({
   getUserById: jest.fn()
 }))
 

@@ -1,8 +1,8 @@
 import { Response } from "express";
-import { healthCheck, initializeApp } from "../../controllers/system.controller";
-import { initializeSystem } from "../../services/system.service";
+import { healthCheck, initializeApp } from "../../../controllers/system.controller";
+import { initializeSystem } from "../../../services/system.service";
 
-jest.mock("../../services/system.service", () => ({
+jest.mock("../../../services/system.service", () => ({
   initializeSystem: jest.fn().mockResolvedValue(undefined),
 }));
 

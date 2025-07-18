@@ -1,7 +1,7 @@
-import { createCategory, getCategoryCount } from "../../repositories/category.repository"
-import { createDefaultCategory } from "../../services/category.service"
+import { createCategory, getCategoryCount } from "../../../repositories/category.repository"
+import { createDefaultCategory } from "../../../services/category.service"
 
-jest.mock("../../repositories/category.repository", () => ({
+jest.mock("../../../repositories/category.repository", () => ({
   getCategoryCount: jest.fn(),
   createCategory: jest.fn()
 }))

@@ -4,7 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "test:integration": "jest --testPathPatterns=tests/integration --verbose",
+  "test:unit": "jest --testPathPatterns=tests/unit --verbose"
   },
   "repository": {
     "type": "git",

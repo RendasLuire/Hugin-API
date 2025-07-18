@@ -32,6 +32,9 @@
     - [🔧System Routes](#system-routes)
       - [✅Health Check Route](#health-check-route)
       - [✅Initialize Route](#initialize-route)
+    - [🔐Auth Routes](#auth-routes)
+      - [✅Health Check Auth Route](#health-check-auth-route)
+      - [✅Login Route](#login-route)
     - [😎Users Routes](#users-routes)
       - [✅Test User Router](#test-user-router)
       - [✅Register User Router](#register-user-router)
@@ -61,15 +64,10 @@
       - [✅Update Movement Router](#update-movement-router)
       - [✅Delete Movement Router](#delete-movement-router)
   - [🧪Tests](#tests)
-    - [🔧System Test](#system-test)
-    - [👤Account Tests](#account-tests)
-      - [Account Model](#account-model-1)
-      - [Account Repository](#account-repository)
-      - [Account Service](#account-service)
-      - [Account Controller](#account-controller)
-    - [Middlewares Tests](#middlewares-tests)
-      - [Auth](#auth)
-      - [Config](#config)
+    - [Integration Test](#integration-test)
+      - [Covered Endpoints](#covered-endpoints)
+    - [Unit Test](#unit-test)
+      - [Covered Modules](#covered-modules)
   - [🛠️Tech Stack](#️tech-stack)
   - [🔮Future Ideas](#future-ideas)
 
@@ -249,6 +247,50 @@ This endpoint is necesary to initialize enviroment to api, creating an admin use
   - `200` - The app has been initialized.
   - `404` - Not found.
   - `500` - Internal Server Error
+
+### 🔐Auth Routes
+
+#### ✅Health Check Auth Route
+
+- **Description:**
+This endpoint is to check if auth route is online.
+
+- **URL:** `/auth/test`
+- **Method:** `GET`
+- **Headers:**
+
+* **✅Response successfully `200 OK`**
+
+```JSON
+{
+  "data": [],
+  "message": "Auth test route is working."
+}  
+```
+
+- **Common responses:**
+  - `404` - Not found.
+
+#### ✅Login Route
+
+- **Description:**
+This endpoint is to authenticate in api.
+
+- **URL:** `/auth/login`
+- **Method:** `POST`
+- **Headers:**
+
+* **✅Response successfully `202 OK`**
+
+```JSON
+{
+  "data": [],
+  "message": "Auth test route is working."
+}  
+```
+
+- **Common responses:**
+  - `404` - Not found.
 
 ### 😎Users Routes
 
@@ -675,57 +717,40 @@ Get account.
 
 ## 🧪Tests
 
-Tests were created user `JEST` and `SuperTest`
+Tests were written using `Jest` and `SuperTest`, covering both unit and integration levels.
 
-### 🔧System Test
+### Integration Test
 
+Integration tests validate the interaction between components, especially the behavior of API endpoints.
 
-### 👤Account Tests
+```batch
+npm run test:integration
+```
 
-#### Account Model
+#### Covered Endpoints
 
-- ✅ Check valid accounts creation.
-- ✅ Validate requeriments `userId`, `name` y `accountTypeId`.
-- ✅ Validate info `state`.
+- `/`: System check health
+- `/initialize`: System initialization and configuration
 
-#### Account Repository
+### Unit Test
 
-- ✅ Validate Test Info.
-- ✅ Check return accounts.
+Unit tests verify isolated logic for individual components of the application.
 
-#### Account Service
+```batch
+npm run test:unit
+```
 
-- `testAccounts`
-  - ✅ Validate Test Response.
+#### Covered Modules
 
-- `getAccountsForUser`
-  - ✅ Check return accounts.
-  - ✅ Validate account is empty.
+- Controllers – request handling logic
 
-#### Account Controller
+- Middlewares – request validation and preprocessing
 
-- `testAccountsController`
-  - ✅ Validate Test Response.
+- Models – schema definitions and validation logic
 
-- `getAccounts`
-  - ✅ Check if return code `401 Unauthorized access`.
-  - ✅ Check return Accounts List.
-  - ✅ Check return code `500 Internal Server Error`.
+- Repositories – database access and operations
 
-### Middlewares Tests
-
-#### Auth
-
-- `authMiddleware`
-  - ✅ Check if return code `401 Unauthorized access` when request don't have header.
-  - ✅ Check if return code `401 Unauthorized access` when token isn´t valid.
-
-#### Config
-
-- `registerMiddlewares`
-  - ✅ Check Express
-  - ✅ Check Cors
-  - ✅ Check Cookie Parser
+- Services – business logic and data processing
 
 ---
 

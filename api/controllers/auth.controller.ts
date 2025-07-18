@@ -40,11 +40,11 @@ export const login = async (req: Request, res: Response) => {
     );
     const refreshToken = jwt.sign({ userId: user?._id }, process.env.JWT_SECRET || "secreto", { expiresIn: "7d" });
 
-    res.cookie("refreshToken", refreshToken, {
+    res.status(202).cookie("refreshToken", refreshToken, {
     httpOnly: true,
     secure: true,
     sameSite: "strict",
-    maxAge: 7 * 24 * 60 * 60 * 1000, // 7 días
+    maxAge: 7 * 24 * 60 * 60 * 1000,
   }).json({
       data: {
         accessToken, 
@@ -85,7 +85,18 @@ export const refreshToken = (req: Request, res: Response) => {
       { expiresIn: "15m" }
     );
 
-    res.json({
+    const newRefreshToken = jwt.sign(
+      { userId: payload.userId, email: payload.email },
+      process.env.JWT_SECRET || "secreto",
+      { expiresIn: "7d" }
+    );
+
+    res.status(202).cookie("refreshToken", newRefreshToken, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "strict",
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+    }).json({
       data:{
         accessToken: newAccessToken
       },
@@ -102,7 +113,7 @@ export const refreshToken = (req: Request, res: Response) => {
 };
 
 export const logout = (req: Request, res: Response) => {
-  res.clearCookie("refreshToken", {
+  res.status(200).clearCookie("refreshToken", {
     httpOnly: true,
     secure: true,
     sameSite: "strict",

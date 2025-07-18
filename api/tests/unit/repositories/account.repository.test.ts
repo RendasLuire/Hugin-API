@@ -1,9 +1,9 @@
-import { getAccountsByUserId, getTestAccounts } from "../../repositories/account.repository";
-import { Account } from "../../models/Account.model";
+import { getAccountsByUserId, getTestAccounts } from "../../../repositories/account.repository";
+import { Account } from "../../../models/Account.model";
 
-jest.mock("../../models/Account.model");
+jest.mock("../../../models/Account.model");
 
-jest.mock('../../lib/mongodb', () => {
+jest.mock('../../../lib/mongodb', () => {
   return {
     __esModule: true,
     default: jest.fn(() => Promise.resolve()),

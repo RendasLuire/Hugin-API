@@ -1,4 +1,4 @@
-import { authMiddleware } from "../../middlewares/auth";
+import { authMiddleware } from "../../../middlewares/auth";
 import jwt from "jsonwebtoken";
 
 describe("Auth Middleware", () => {

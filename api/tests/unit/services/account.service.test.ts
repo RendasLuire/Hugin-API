@@ -1,16 +1,16 @@
 process.env.MONGODB_URI = "mongodb://fakeurl"; 
 
-import { testAccounts, getAccountsForUser } from "../../services/account.service";
-import * as accountRepository from "../../repositories/account.repository"; 
+import { testAccounts, getAccountsForUser } from "../../../services/account.service";
+import * as accountRepository from "../../../repositories/account.repository"; 
 
-jest.mock("../../repositories/account.repository"); 
+jest.mock("../../../repositories/account.repository"); 
 
 describe("Account Service", () => {
   afterEach(() => {
     jest.clearAllMocks();
   });
 
-  jest.mock('../../lib/mongodb', () => {
+  jest.mock('../../../lib/mongodb', () => {
     return {
       __esModule: true,
       default: jest.fn(() => Promise.resolve()),

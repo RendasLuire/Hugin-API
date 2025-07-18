@@ -4,9 +4,9 @@ import { login, refreshToken, logout } from '../controllers/auth.controller';
 const router = Router();
 
 router.get("/test", (req, res) => {
-  res.json({
+  res.status(200).json({
     data: {},
-    message: "Auth test route is working",
+    message: "Auth test route is working.",
     });
   })
 

@@ -1,7 +1,7 @@
-import { createAccountType, getAccountTypeByKey, getAccountTypeCount } from "../../repositories/accountType.repository"
-import { checkPrimigeniusAccountType, defineDefaultAccountTypes } from "../../services/accountType.service"
+import { createAccountType, getAccountTypeByKey, getAccountTypeCount } from "../../../repositories/accountType.repository"
+import { checkPrimigeniusAccountType, defineDefaultAccountTypes } from "../../../services/accountType.service"
 
-jest.mock("../../repositories/accountType.repository", () => ({
+jest.mock("../../../repositories/accountType.repository", () => ({
   getAccountTypeCount: jest.fn(),
   createAccountType: jest.fn(),
   getAccountTypeByKey: jest.fn()

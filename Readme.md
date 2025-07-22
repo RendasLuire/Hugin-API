@@ -35,6 +35,8 @@
     - [🔐Auth Routes](#auth-routes)
       - [✅Health Check Auth Route](#health-check-auth-route)
       - [✅Login Route](#login-route)
+    - [✅Refresh Token Route](#refresh-token-route)
+    - [✅Logout Route](#logout-route)
     - [😎Users Routes](#users-routes)
       - [✅Test User Router](#test-user-router)
       - [✅Register User Router](#register-user-router)
@@ -285,8 +287,54 @@ This endpoint is to authenticate in api.
 ```JSON
 {
   "data": [],
-  "message": "Auth test route is working."
+  "message": "Login successful"
 }  
+```
+
+- **Common responses:**
+  - `400` - Fields email and password are required.
+  - `401` - User incorrect or Password incorrect.
+  - `404` - Not found.
+  - `500` - Error during login.
+
+### ✅Refresh Token Route
+
+- **Description:**
+This endpoint is to refresh token and keep the session open.
+
+- **URL:** `/auth/refresh`
+- **Method:** `POST`
+- **Headers:**
+
+* **✅Response successfully `202 OK`**
+
+```JSON
+{
+  "data": [],
+  "message": "Login successful"
+}  
+```
+
+- **Common responses:**
+  - `400` - Fields email and password are required.
+  - `401` - User incorrect or Password incorrect.
+  - `404` - Not found.
+  - `500` - Error during login.
+  
+### ✅Logout Route
+
+- **Description:**
+  This endpoint is to close session and clear cookies.
+
+- **URL:** `/auth/logout`
+- **Method:** `POST`
+- **Headers:**
+
+* **✅Response successfully `202 OK`
+
+```JSON
+  "data": [],
+  "message": "Logout successful."
 ```
 
 - **Common responses:**

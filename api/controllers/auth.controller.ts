@@ -113,13 +113,21 @@ export const refreshToken = (req: Request, res: Response) => {
 };
 
 export const logout = (req: Request, res: Response) => {
-  res.status(200).clearCookie("refreshToken", {
+ try{ res.status(202).clearCookie("refreshToken", {
     httpOnly: true,
     secure: true,
     sameSite: "strict",
   }).json({
     data: {},
-    message: "Logout successful",
+    message: "Logout successful.",
   });
   return
+} catch (error) {
+    res.status(500).json({
+      data: {},
+      message: "Error during logout",
+      error
+    });
+    return
+}
 }

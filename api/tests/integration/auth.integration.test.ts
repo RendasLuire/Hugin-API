@@ -157,6 +157,7 @@ describe('Auth Integration - ', () => {
       expect(response.body.data.accessToken).toBeDefined()
       const cookies = response.headers['set-cookie'];
       expect(cookies).toBeDefined();
+      expect(cookies[0]).toContain('refreshToken');
     })
 
     it('Should response 401 when there is not.', async () => {
@@ -181,5 +182,18 @@ describe('Auth Integration - ', () => {
       expect(response.body.message).toBe(expectedMessage)
     })
   })
-  describe('POST /logout', () => {})
+  describe('POST /logout', () => {
+    it('Should response 202 with logout message and clear cookies.', async () => {
+      const expectedStatus = 202
+      const expectedMessage = "Logout successful."
+
+      const response = await request(app).post('/auth/logout').send({})
+
+      expect(response.status).toBe(expectedStatus)
+      expect(response.body.message).toBe(expectedMessage)
+      const cookies = response.headers['set-cookie'];
+      expect(cookies).toBeDefined();
+      expect(cookies[0]).toContain('refreshToken=;');
+    })
+  })
 })

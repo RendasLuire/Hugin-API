@@ -10,7 +10,10 @@ jest.mock('../../../lib/mongodb', () => {
   };
 });
 
-describe("getTestAccounts", () => {
+describe("Account Repository Tests", () => {
+
+  
+  describe("getTestAccounts", () => {
   afterEach(() => {
     jest.clearAllMocks();
   });
@@ -76,3 +79,4 @@ describe("getAccountsByUserId", () => {
     await expect(getAccountsByUserId("fakeUserId")).rejects.toThrow("Database error during populate");
   });
 });
+})

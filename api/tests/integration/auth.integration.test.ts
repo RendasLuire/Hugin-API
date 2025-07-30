@@ -1,17 +1,44 @@
 import { MongoMemoryServer } from 'mongodb-memory-server';
-import mongoose from 'mongoose';
+import mongoose, { Types } from 'mongoose';
 import request from 'supertest';
 import { User } from '../../models/User.model';
 import bcrypt from "bcryptjs"
+import jwt from "jsonwebtoken";
+
+jest.setTimeout(30000);
 
 let mongoServer: MongoMemoryServer
 let app: any;
+
+
+type TestUser = {
+  name: string;
+  email: string;
+  password: string;
+  _id?: Types.ObjectId;
+};
+
+ let testUser:TestUser = {
+    name: "Test User",
+    email: "test@example.com",
+    password: "12345678"
+  };
 
 beforeAll(async () => {
   mongoServer = await MongoMemoryServer.create();
   const uri = mongoServer.getUri();
   process.env.MONGODB_URI = uri;
   app = (await import("../../index")).default;
+
+  const passwordHash = await bcrypt.hash(testUser.password, 10);
+
+    const newUser = await User.create({
+      name: testUser.name,
+      email: testUser.email,
+      passwordHash
+    });
+
+    testUser = {...testUser , _id:newUser._id};
 });
 
 afterAll(async () => {
@@ -38,25 +65,9 @@ describe('Auth Integration - ', () => {
 
   describe('POST /login', () => {
 
-    const testUser = {
-    name: "Test User",
-    email: "test@example.com",
-    password: "12345678"
-  };
-
-  beforeAll( async () => {
-    const passwordHash = await bcrypt.hash(testUser.password, 10);
-
-    await User.create({
-      name: testUser.name,
-      email: testUser.email,
-      passwordHash
+    afterAll(async () => {
+      await User.deleteMany({});
     });
-  })
-
-  afterAll(async () => {
-  await User.deleteMany({});
-});
 
     it('Should response 202 with token and cookies.', async () => {
       const expectedStatus = 202
@@ -146,11 +157,18 @@ describe('Auth Integration - ', () => {
   })
   describe('POST /refresh', () => {
     it('Should response 202 when token was updated.', async () => {
-      const senderToken = 'refreshToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODdhYzZhNmIyYzY0NWIyZGVjNzFkYWQiLCJpYXQiOjE3NTI4NzY3MTEsImV4cCI6MTc1MzQ4MTUxMX0.4OIsPBbTZrcnl8S4m9jOfQUNACsf6cPfN1bAJ5o2DLU; Max-Age=604800; Path=/; Expires=Fri, 25 Jul 2025 22:11:51 GMT; HttpOnly; Secure; SameSite=Strict'
       const expectedStatus = 202
       const expectedMessage = "Access token refreshed successfully"
 
-      const response = await request(app).post('/auth/refresh').set("Cookie", [senderToken]).send({})
+      const accessToken = jwt.sign(
+            { userId: testUser?._id, email: testUser?.email },
+            process.env.JWT_SECRET || "secreto",
+            { expiresIn: "1h" }
+          );
+
+      const refreshToken = jwt.sign({ userId: testUser?._id }, process.env.JWT_SECRET || "secreto", { expiresIn: "7d" });
+      
+      const response = await request(app).post('/auth/refresh').auth(accessToken, { type: 'bearer' }).set('Cookie', [`refreshToken=${refreshToken}`]).send({})
 
       expect(response.status).toBe(expectedStatus)
       expect(response.body.message).toBe(expectedMessage)

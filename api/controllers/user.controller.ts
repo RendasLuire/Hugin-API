@@ -3,29 +3,29 @@ import connectToDatabase from "../lib/mongodb";
 import bcrypt from "bcryptjs";
 import { User } from "../models/User.model";
 import mongoose from "mongoose";
-import { createInitUserData, deleteUserData } from "../utils/users";
+import { loadNewUserData, deleteUserData } from "../services/userSetup.service";
 
 export const testUsers = (req: Request, res: Response) => {
-  res.json([
+  res.status(202).json(
     {
-      data: {
+      data: [{
         id: 1,
         name: "John Doe",
         email: "JohnDoe@correo.com",
         passwordHash: "hashed_password_123",
         createdAt: new Date("2023-01-01T00:00:00Z"),
         updatedAt: new Date("2023-01-01T00:00:00Z"),
-      },
+      }],
       message: "Test Users endpoint is working",
     }
-  ]);
+  );
 };
 
 export const getUsers = async (req: Request, res: Response) => {
   try {
     await connectToDatabase();
     const users = await User.find().select("-passwordHash");
-    res.json({
+    res.status(200).json({
       data: users,
       message: "Users List retrieved successfully",
     });
@@ -55,7 +55,7 @@ export const getUserById = async (req: Request, res: Response) => {
         message: "User not found" 
       });
     }
-    res.json({
+    res.status(200).json({
       data: user,
       message: "User retrieved successfully",
     });
@@ -80,7 +80,7 @@ try {
 await connectToDatabase();
 const existingUser = await User.findOne({ email });
 if (existingUser) {
-  res.status(400).json({
+  res.status(409).json({
     data: {},
     message: "This email is already registered",
   });
@@ -90,7 +90,7 @@ const passwordHash = await bcrypt.hash(password, 10);
 const newUser = new User({ name, email, passwordHash });
 await newUser.save();
 
-await createInitUserData(newUser._id);
+await loadNewUserData(newUser._id.toString());
 res.status(201).json({
   data: {
     id: newUser._id,
@@ -121,12 +121,12 @@ export const updateUser = async (req: Request, res: Response) => {
   if (!name && !email && !passwordHash) {
     res.status(400).json({
       data: {},
-      message: "Fields name, email, and passwordHash are required",
+      message: "Fields name, email, or password are required",
     });
   }
 try {
-await connectToDatabase();
-const existingUser = await User.findById(userId);
+  await connectToDatabase();
+  const existingUser = await User.findById(userId);
 if (!existingUser) {
   res.status(404).json({
     data: {},
@@ -144,6 +144,7 @@ const newName = name || existingUser.name;
 const newEmail = email || existingUser.email;
 const newPasswordHash = passwordHash || existingUser.passwordHash;
 
+
 const updatedUser = await User.findByIdAndUpdate(
 userId,
 { name:newName, email: newEmail, passwordHash: newPasswordHash },
@@ -156,7 +157,7 @@ if (!updatedUser) {
   });
   return
 }
-res.json({
+res.status(202).json({
   data: {
     id: updatedUser._id,
     name: updatedUser.name
@@ -194,7 +195,7 @@ if (!deletedUser) {
 
 await deleteUserData(deletedUser.id);
 
-res.json({
+res.status(202).json({
   data: {
     id: deletedUser._id,
     name: deletedUser.name

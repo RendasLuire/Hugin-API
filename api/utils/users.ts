@@ -41,8 +41,6 @@ export async function createInitUserData(userId: Types.ObjectId) {
     payDay: 27, 
   })
 
-  console.log("Initial user data created successfully.");
-
 
 }
 
@@ -55,5 +53,4 @@ export async function deleteUserData(userId: Types.ObjectId) {
   //TODO Use repository function to delete bank data
   await Bank.deleteMany({ userId });
 
-  console.log("User data deleted successfully.");
 }

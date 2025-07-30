@@ -8,9 +8,9 @@ import systemRoutes from "../routes/system.router";
 
 export const registerRoutes = (app: express.Application) => {
   app.use("/", systemRoutes);
-  app.use("/accounts", accountRoutes);
-  app.use("/users", usersRoutes);
   app.use("/auth", authRoutes);
+  app.use("/users", usersRoutes);
+  app.use("/accounts", accountRoutes);
   app.use("/account-types", accountTypeRoutes);
   app.use("/banks", bankRoutes);
 }

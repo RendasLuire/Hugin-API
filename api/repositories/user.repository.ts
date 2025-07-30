@@ -6,7 +6,6 @@ export const getUserCount = async (): Promise<number> => {
   return count;
 }
 
-
 export const createUser = async (userData: Partial<UserInputData>) => {
   const user = new User(userData);
   return await user.save();
@@ -27,3 +26,4 @@ export const getUserById = async (userId: string) => {
   }
   return user;
 }
+  

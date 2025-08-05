@@ -5,9 +5,9 @@ import connectToDatabase from "./lib/mongodb";
 
 const app = express();
 
+registerMiddlewares(app);
 connectToDatabase()
 
-registerMiddlewares(app);
 registerRoutes(app);
 
 export default app;

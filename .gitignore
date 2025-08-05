@@ -14,3 +14,4 @@ coverage/
 
 # Ignorar archivos de entorno
 .env
+.vercel

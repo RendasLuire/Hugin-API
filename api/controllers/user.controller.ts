@@ -4,6 +4,8 @@ import bcrypt from "bcryptjs";
 import { User } from "../models/User.model";
 import mongoose from "mongoose";
 import { loadNewUserData, deleteUserData } from "../services/userSetup.service";
+import { createNewUser, getInfoUserById, getUsersList } from "../services/user.service";
+import { getUserByEmail } from "../repositories/user.repository";
 
 export const testUsers = (req: Request, res: Response) => {
   res.status(202).json(
@@ -23,8 +25,7 @@ export const testUsers = (req: Request, res: Response) => {
 
 export const getUsers = async (req: Request, res: Response) => {
   try {
-    await connectToDatabase();
-    const users = await User.find().select("-passwordHash");
+    const users = await getUsersList();
     res.status(200).json({
       data: users,
       message: "Users List retrieved successfully",
@@ -47,8 +48,7 @@ export const getUserById = async (req: Request, res: Response) => {
     });
   }
   try {
-    await connectToDatabase();
-    const user = await User.findById(userId).select("-passwordHash");
+    const user = await getInfoUserById(userId);
     if (!user) {
       res.status(404).json({ 
         data: {},
@@ -69,43 +69,48 @@ export const getUserById = async (req: Request, res: Response) => {
 };
 
 export const createUser = async (req: Request, res: Response) => {
-  const { name, email, password } = req.body;
-  if (!name || !email || !password) {
+  const { name, email, passwordHash } = req.body;
+  if (!name || !email || !passwordHash) {
     res.status(400).json({
       data: {},
       message: "Fiels name, email, and password are required",
     });
   }
-try {
-await connectToDatabase();
-const existingUser = await User.findOne({ email });
-if (existingUser) {
-  res.status(409).json({
-    data: {},
-    message: "This email is already registered",
-  });
-}
+  try {
+    const existingUser = await getUserByEmail(email);
 
-const passwordHash = await bcrypt.hash(password, 10);
-const newUser = new User({ name, email, passwordHash });
-await newUser.save();
+    if (existingUser) {
+      res.status(409).json({
+        data: {},
+        message: "This email is already registered",
+      });
+    }
 
-await loadNewUserData(newUser._id.toString());
-res.status(201).json({
-  data: {
-    id: newUser._id,
-    name: newUser.name,
-    email: newUser.email,
-  },
-  message: "User created successfully",
-});
-} catch (error) {
-res.status(500).json({
-  data: {},
-  message: "Error creating user",
-  error
-});
-}
+    const newUser = createNewUser({ name, email, passwordHash });
+
+    if (!newUser) {
+      res.status(500).json({
+        data: {},
+        message: "Error creating user",
+      });
+    }
+
+    await loadNewUserData(newUser._id.toString());
+    res.status(201).json({
+      data: {
+        id: newUser._id,
+        name: newUser.name,
+        email: newUser.email,
+      },
+      message: "User created successfully",
+    });
+  } catch (error) {
+    res.status(500).json({
+      data: {},
+      message: "Error creating user",
+      error
+    });
+  }
 };
 
 export const updateUser = async (req: Request, res: Response) => {
@@ -172,7 +177,6 @@ res.status(500).json({
 });
 }
 };
-
 
 export const deleteUser = async (req: Request, res: Response) => {
 const userId = req.params.id;

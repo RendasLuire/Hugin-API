@@ -68,6 +68,9 @@
   - [🧪Tests](#tests)
     - [Integration Test](#integration-test)
       - [Covered Endpoints](#covered-endpoints)
+        - [System](#system)
+        - [Authentication](#authentication)
+        - [Users](#users)
     - [Unit Test](#unit-test)
       - [Covered Modules](#covered-modules)
   - [🛠️Tech Stack](#️tech-stack)
@@ -777,8 +780,26 @@ npm run test:integration
 
 #### Covered Endpoints
 
+##### System
+
 - `/`: System check health
 - `/initialize`: System initialization and configuration
+
+##### Authentication
+
+- `/test`: Auth Check health
+- `/login`: Login to system
+- `/refresh`: Refresh token
+- `/logout`: Logout to system
+
+##### Users
+
+- `/users/test`: Users routes check health
+- `/users/`: List all users
+- `/users/`: Show only one user
+- `/users/`: Register user
+- `/users/`: Update user
+- `/users/`: Delete user
 
 ### Unit Test
 

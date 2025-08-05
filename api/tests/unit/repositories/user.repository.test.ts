@@ -15,7 +15,7 @@ describe('User Repository Tests', () => {
     it('should return the count of users', async () => {
       const mockCount = 5;
       (User.countDocuments as jest.Mock).mockResolvedValue(mockCount);
-
+ 
       const count = await getUserCount();
 
       expect(User.countDocuments).toHaveBeenCalled();

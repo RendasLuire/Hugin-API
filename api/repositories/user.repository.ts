@@ -26,4 +26,17 @@ export const getUserById = async (userId: string) => {
   }
   return user;
 }
-  
+
+export const getAllUsers = async () => {
+  const users = await User.find().select("-passwordHash");
+  return users;
+}
+
+export const getUserByEmail = async (email: string) => {
+  const user = await User.findOne({ email });
+
+  if (!user) {
+    throw new Error("User not found");
+  }
+  return user;
+}

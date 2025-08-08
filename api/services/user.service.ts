@@ -1,6 +1,7 @@
-import { createUser, getAdminUser, getAllUsers, getUserByEmail, getUserById} from "../repositories/user.repository";
+import { createUser, deleteUserById, getAdminUser, getAllUsers, getUserByEmail, getUserById} from "../repositories/user.repository";
 import { UserInputData } from "../types/user.type";
 import bcrypt from "bcryptjs";
+import { deleteUserData, loadNewUserData } from "./userSetup.service";
 
 
 export const createAdminUser = async () => {
@@ -56,9 +57,17 @@ export const getInfoUserById = async (userId: string) => {
 
 export const createNewUser = async (userData: UserInputData) => {
   try {
-userData.passwordHash = await bcrypt.hash(userData.passwordHash as string, 10);
+  userData.passwordHash = await bcrypt.hash(userData.passwordHash as string, 10);
 
     const newUser = await createUser(userData);
+
+    if (!newUser) {
+      throw new Error("Error creating user");
+    }
+
+    
+    await loadNewUserData(newUser._id.toString());
+
     return newUser;
   } catch (error) {
     throw new Error("Error creating user");
@@ -81,16 +90,29 @@ export const updateUser = async (userId: string, userData: Partial<UserInputData
   try {
     const user = await getUserById(userId);
     if (!user) {
-      throw new Error("User not found");
+      throw new Error("User not found"); 
     }
 
-    if (userData.passwordHash) {
-      userData.passwordHash = await bcrypt.hash(userData.passwordHash as string, 10);
-    }
 
     Object.assign(user, userData);
     return await user.save();
   } catch (error) {
     throw new Error("Error updating user");
+  }
+}
+
+export const deleteUserInfo = async (userId: string) => {
+  try {
+    const user = await getUserById(userId);
+    if (!user) {
+      throw new Error("User not found");
+    }
+
+    const userDeleted =  await deleteUserById(userId);
+
+    await deleteUserData(userId);
+    return userDeleted;
+  } catch (error) {
+    throw new Error("Error deleting user");
   }
 }

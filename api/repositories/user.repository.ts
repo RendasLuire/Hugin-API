@@ -40,3 +40,12 @@ export const getUserByEmail = async (email: string) => {
   }
   return user;
 }
+
+export const deleteUserById = async (userId: string) => {
+  const user = await User.findByIdAndDelete(userId);
+
+  if (!user) {
+    throw new Error("User not found");
+  }
+  return user;
+}

@@ -1,11 +1,8 @@
 import { Request, Response } from "express";
-import connectToDatabase from "../lib/mongodb";
 import bcrypt from "bcryptjs";
-import { User } from "../models/User.model";
 import mongoose from "mongoose";
-import { loadNewUserData, deleteUserData } from "../services/userSetup.service";
-import { createNewUser, existingUser, getInfoUserById, getUsersList, updateUser} from "../services/user.service";
-
+import { createNewUser, deleteUserInfo, existingUser, getInfoUserById, getUsersList, updateUser} from "../services/user.service";
+ 
 export const testUsers = (req: Request, res: Response) => {
   res.status(202).json(
     {
@@ -94,7 +91,6 @@ export const createUser = async (req: Request, res: Response) => {
       });
     }
 
-    await loadNewUserData(newUser._id.toString());
     res.status(201).json({
       data: {
         id: newUser._id,
@@ -179,8 +175,8 @@ if (!mongoose.Types.ObjectId.isValid(userId)) {
   });
 }
 try {
-await connectToDatabase();
-const deletedUser = await User.findByIdAndDelete(userId);
+const deletedUser = await deleteUserInfo(userId);
+
 if (!deletedUser) {
   res.status(404).json({
     data: {},
@@ -188,8 +184,6 @@ if (!deletedUser) {
   });
   return
 }
-
-await deleteUserData(deletedUser.id);
 
 res.status(202).json({
   data: {

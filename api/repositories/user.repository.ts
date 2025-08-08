@@ -36,7 +36,7 @@ export const getUserByEmail = async (email: string) => {
   const user = await User.findOne({ email });
 
   if (!user) {
-    throw new Error("User not found");
+    return {}
   }
   return user;
 }

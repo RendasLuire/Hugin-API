@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import bcrypt from "bcryptjs";
 import mongoose from "mongoose";
 import { createNewUser, deleteUserInfo, existingUser, getInfoUserById, getUsersList, updateUser} from "../services/user.service";
+import { User } from "../models/User.model";
  
 export const testUsers = (req: Request, res: Response) => {
   res.status(202).json(

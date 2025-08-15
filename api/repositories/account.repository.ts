@@ -31,6 +31,23 @@ export const createAccount = async (accountData: Object) => {
     return newAccount;
 }
 
+export const updateAccount = async (accountId: string, updateData: Object) => {
+  const accountToUpdate = await Account.findById(accountId);
+
+  if (!accountToUpdate) {
+    throw new Error('Account not found');
+  }
+
+  Object.assign(accountToUpdate, updateData);
+  const updatedAccount = await accountToUpdate.save();
+
+  if(!updatedAccount) {
+    throw new Error('Error updating account');
+  }
+
+  return updatedAccount;
+}
+
 export const deleteAccountsByUserId = async (userId: string) => {
     const result = await Account.deleteMany({ userId });
     return result;

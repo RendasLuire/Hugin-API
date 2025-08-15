@@ -1,8 +1,15 @@
 import { Request, Response } from "express";
-import { User } from "../models/User.model";
-import connectToDatabase from "../lib/mongodb";
-import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import { existingUser } from "../services/user.service";
+import { loginUser as loginUserService, testAuthentication as testAuthenticationService } from "../services/auth.service";
+
+export const testAuthentication = async (req: Request, res: Response) => {
+  const data = await testAuthenticationService()
+
+  res.status(200).json(
+    data,
+  );
+}
 
 export const login = async (req: Request, res: Response) => {
   const { email, password } = req.body;
@@ -14,45 +21,25 @@ export const login = async (req: Request, res: Response) => {
     return
   }
   try {
-    await connectToDatabase();
-    const user = await User.findOne({ email }).select("+passwordHash");
-    if (!user) {
-      res.status(401).json({
-        data: {},
-        message: "User incorrect",
-      });
-      return
-    }
-    const isValid = await bcrypt.compare(password, user?.passwordHash as string);
+    const userExist = await existingUser(email);
 
-    if (!isValid) {
-      res.status(401).json({
+    if (!userExist) {
+      res.status(404).json({
         data: {},
-        message: "Password incorrect",
+        message: "User not found",
       });
       return
     }
+
+    const userSession = await loginUserService({ email, password });
     
-    const accessToken = jwt.sign(
-      { userId: user?._id, email: user?.email },
-      process.env.JWT_SECRET || "secreto",
-      { expiresIn: "1h" }
-    );
-    const refreshToken = jwt.sign({ userId: user?._id }, process.env.JWT_SECRET || "secreto", { expiresIn: "7d" });
-
-    res.status(202).cookie("refreshToken", refreshToken, {
+    res.status(202).cookie("refreshToken", userSession.refreshToken, {
     httpOnly: true,
     secure: true,
     sameSite: "strict",
     maxAge: 7 * 24 * 60 * 60 * 1000,
   }).json({
-      data: {
-        accessToken, 
-        user: {
-          name: user?.name,
-          email: user?.email,
-        } 
-      },
+      data: userSession,
       message: "Login successful",
     });
   } catch (error) {

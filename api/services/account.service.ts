@@ -1,5 +1,5 @@
 import { Types } from "mongoose";
-import { getTestAccounts, getAccountsByUserId, createAccount, deleteAccountsByUserId } from "../repositories/account.repository";
+import { getTestAccounts, getAccountsByUserId, createAccount, deleteAccountsByUserId, updateAccount } from "../repositories/account.repository";
 
 export const testAccounts = () => {
   const accounts = getTestAccounts();
@@ -31,6 +31,12 @@ export const createInitialAccount = async (userId: Types.ObjectId ,accountTypeId
   const newAccount = await createAccount(initialAccountData);
 
   return newAccount;
+}
+
+export const updateAccountData = async (accountId: string, updateData: Object) => {
+  const updatedAccount = await updateAccount(accountId, updateData);
+
+  return updatedAccount;
 }
 
 export const deleteAccountsByUser = async (userId: string) => {

@@ -1,15 +1,9 @@
 import  { Router } from 'express';
-import { login, refreshToken, logout } from '../controllers/auth.controller';
+import { login, refreshToken, logout, testAuthentication } from '../controllers/auth.controller';
 
 const router = Router();
 
-router.get("/test", (req, res) => {
-  res.status(200).json({
-    data: {},
-    message: "Auth test route is working.",
-    });
-  })
-
+router.get("/test", testAuthentication)
 router.post('/login', login);
 router.post('/refresh', refreshToken);
 router.post('/logout', logout);

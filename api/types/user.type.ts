@@ -1,6 +1,20 @@
-import { InferSchemaType } from "mongoose";
-import { UserSchema } from "../models/User.model";
+import { IUser } from "../models/User.model";
 
-export type UserData = InferSchemaType<typeof UserSchema>;
+export type BaseUserDTO = Omit<IUser, "createdAt" | "updatedAt">;
 
-export type UserInputData = Omit<UserData, "createdAt" | "updatedAt">;
+export type UserCreateDTO = Omit<BaseUserDTO, "_id" | "passwordHash"> & {
+  password: string;
+};
+
+export type UserUpdateDTO = Partial<Pick<BaseUserDTO, "name" | "email">> & {
+  password?: string;
+};
+
+export type UserResponseDTO = Omit<BaseUserDTO, "passwordHash">;
+
+export interface UserListResponseDTO {
+  users: UserResponseDTO[];
+  total: number;
+  page: number;
+  limit: number;
+}

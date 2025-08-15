@@ -1,5 +1,12 @@
-import { createUser, deleteUserById, getAdminUser, getAllUsers, getUserByEmail, getUserById} from "../repositories/user.repository";
-import { UserInputData } from "../types/user.type";
+import { 
+  createUser, 
+  deleteUserById, 
+  getAdminUser, 
+  getAllUsers, 
+  getUserByEmail as getUserByEmailRepository, 
+  getUserById
+} from "../repositories/user.repository";
+import { BaseUserDTO } from "../types/user.type";
 import bcrypt from "bcryptjs";
 import { deleteUserData, loadNewUserData } from "./userSetup.service";
 
@@ -52,6 +59,19 @@ export const getInfoUserById = async (userId: string) => {
     return user;
   } catch (error) {
     throw new Error("Error retrieving user by ID");
+  }
+}
+
+export const getUserByEmail = async (email: string) => {
+  try {
+    const user:BaseUserDTO = await getUserByEmailRepository(email);
+
+    if (!user) {
+      throw new Error("User not found");
+    }
+    return user;
+  } catch (error) {
+    throw new Error("Error retrieving user by email");
   }
 }
 

@@ -29,8 +29,8 @@ export const getAccounts = async (req: Request, res: Response) => {
   }
 
   try {
-    const accounts = await getAccountsForUser(user.id);
 
+    const accounts = await getAccountsForUser(user.id);
     
   if (!accounts || accounts.length === 0) {
     res.status(400).json({

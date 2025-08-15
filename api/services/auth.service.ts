@@ -1,5 +1,5 @@
 import { UserLoginDTO } from "../types/auth.type";
-import { BaseUserDTO } from "../types/user.type";
+import { BaseUserDTO, UserCreateDTO } from "../types/user.type";
 import { getUserByEmail } from "./user.service";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
@@ -39,13 +39,13 @@ export const loginUser = async (data: UserLoginDTO) => {
     throw new Error("Email and password are required");
   }
 
-  const user = await getUserByEmail(email);
+  const user:BaseUserDTO = await getUserByEmail(email);
 
   if (!user) {
     throw new Error("User not found");
   }
 
-  const isPasswordValid = await bcrypt.compare(password, user.passwordHash);
+  const isPasswordValid = await bcrypt.compare(password, user.password);
   if (!isPasswordValid) {
     throw new Error("Invalid password");
   }
@@ -65,4 +65,30 @@ export const loginUser = async (data: UserLoginDTO) => {
     accessToken,
     refreshToken,
   };
+}
+
+export const refreshAccessToken = async (token: string) => {
+  if (!token) {
+    throw new Error("Refresh token is required");
+  }
+
+  try {
+    const payload = jwt.verify(token, process.env.JWT_SECRET || "secreto") as { userId: string; email: string };
+
+     const user = await getUserByEmail(payload.email);
+
+    if (!user) {
+      throw new Error("User not found");
+    }
+
+    const { accessToken, refreshToken } = await generateTokens(user);
+
+    return {
+      accessToken,
+      refreshToken,
+    };
+
+  } catch (error) {
+    throw new Error("Invalid refresh token");
+  }
 }

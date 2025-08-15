@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import bcrypt from "bcryptjs";
 import mongoose from "mongoose";
 import { createNewUser, deleteUserInfo, existingUser, getInfoUserById, getUsersList, updateUser} from "../services/user.service";
-import { User } from "../models/User.model";
+import { BaseUserDTO } from "../types/user.type";
  
 export const testUsers = (req: Request, res: Response) => {
   res.status(202).json(
@@ -135,7 +135,7 @@ export const updateUserInfo = async (req: Request, res: Response) => {
       });
     }
 
-    const updatedData: Partial<User> = {};
+    const updatedData: Partial<BaseUserDTO> = {};
     if (name) updatedData.name = name;
     if (email) updatedData.email = email;
     if (password) updatedData.passwordHash = await bcrypt.hash(password, 10);

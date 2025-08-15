@@ -1,12 +1,12 @@
 import { User } from "../models/User.model";
-import { UserInputData } from "../types/user.type";
+import { BaseUserDTO, UserCreateDTO } from "../types/user.type";
 
 export const getUserCount = async (): Promise<number> => {
   const count = await User.countDocuments();
   return count;
 }
 
-export const createUser = async (userData: Partial<UserInputData>) => {
+export const createUser = async (userData: Partial<UserCreateDTO>) => {
   const user = new User(userData);
   return await user.save();
 }
@@ -32,14 +32,24 @@ export const getAllUsers = async () => {
   return users;
 }
 
-export const getUserByEmail = async (email: string) => {
-  const user = await User.findOne({ email });
+export const getUserByEmail = async (
+  email: string
+): Promise<BaseUserDTO | null> => {
+  const user = await User.findOne({ email }).lean();
 
   if (!user) {
-    return {}
+    return null;
   }
-  return user;
-}
+
+  return {
+    _id: user._id.toString(),
+    name: user.name,
+    email: user.email,
+    role: user.role,
+    passwordHash: user.passwordHash
+  };
+};
+
 
 export const deleteUserById = async (userId: string) => {
   const user = await User.findByIdAndDelete(userId);

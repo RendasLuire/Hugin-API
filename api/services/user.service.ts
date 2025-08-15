@@ -6,7 +6,7 @@ import {
   getUserByEmail as getUserByEmailRepository, 
   getUserById
 } from "../repositories/user.repository";
-import { BaseUserDTO } from "../types/user.type";
+import { BaseUserDTO, UserCreateDTO } from "../types/user.type";
 import bcrypt from "bcryptjs";
 import { deleteUserData, loadNewUserData } from "./userSetup.service";
 
@@ -22,10 +22,10 @@ export const createAdminUser = async () => {
     return false;
   }
 
-  const adminUser: UserInputData = {
+  const adminUser: UserCreateDTO = {
     name: "Admin",
     email,
-    passwordHash: hashedPassword,
+    password: hashedPassword,
     role: "admin",
   }
 
@@ -64,7 +64,7 @@ export const getInfoUserById = async (userId: string) => {
 
 export const getUserByEmail = async (email: string) => {
   try {
-    const user:BaseUserDTO = await getUserByEmailRepository(email);
+    const user = await getUserByEmailRepository(email);
 
     if (!user) {
       throw new Error("User not found");

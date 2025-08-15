@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import { existingUser } from "../services/user.service";
-import { loginUser as loginUserService, testAuthentication as testAuthenticationService } from "../services/auth.service";
+import { loginUser as loginUserService, refreshAccessToken, testAuthentication as testAuthenticationService } from "../services/auth.service";
 
 export const testAuthentication = async (req: Request, res: Response) => {
   const data = await testAuthenticationService()
@@ -51,7 +51,7 @@ export const login = async (req: Request, res: Response) => {
   }
 };
 
-export const refreshToken = (req: Request, res: Response) => {
+export const refreshToken = async (req: Request, res: Response) => {
   const token = req.cookies.refreshToken;
 
   if (!token) {
@@ -64,19 +64,7 @@ export const refreshToken = (req: Request, res: Response) => {
   }
 
   try {
-    const payload = jwt.verify(token, process.env.JWT_SECRET || "secreto") as { userId: string; email: string };
-
-    const newAccessToken = jwt.sign(
-      { userId: payload.userId, email: payload.email },
-      process.env.JWT_SECRET || "secreto",
-      { expiresIn: "15m" }
-    );
-
-    const newRefreshToken = jwt.sign(
-      { userId: payload.userId, email: payload.email },
-      process.env.JWT_SECRET || "secreto",
-      { expiresIn: "7d" }
-    );
+    const { accessToken: newAccessToken, refreshToken: newRefreshToken } = await refreshAccessToken(token);
 
     res.status(202).cookie("refreshToken", newRefreshToken, {
       httpOnly: true,

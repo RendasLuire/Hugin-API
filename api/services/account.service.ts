@@ -1,5 +1,5 @@
-import { Types } from "mongoose";
 import { getTestAccounts, getAccountsByUserId, createAccount, deleteAccountsByUserId, updateAccount } from "../repositories/account.repository";
+import { AccountCreateDTO, AccountUpdateDTO } from "../types/account.type";
 
 export const testAccounts = () => {
   const accounts = getTestAccounts();
@@ -15,12 +15,12 @@ export const getAccountsForUser = async (userId: string) => {
   return accounts;
 }
 
-export const createInitialAccount = async (userId: Types.ObjectId ,accountTypeId: Types.ObjectId, bankId: Types.ObjectId) => {
+export const createInitialAccount = async (data: AccountCreateDTO) => {
   const initialAccountData = {
-    userId,
+    userId: data.userId,
     name: "Arca Primordial",
-    accountTypeId,
-    bankId,
+    accountTypeId: data.accountTypeId,
+    bankId: data.bankId,
     balance: 0,
     limit: 0,
     nextPay: 0,
@@ -33,7 +33,7 @@ export const createInitialAccount = async (userId: Types.ObjectId ,accountTypeId
   return newAccount;
 }
 
-export const updateAccountData = async (accountId: string, updateData: Object) => {
+export const updateAccountData = async (accountId: string, updateData: AccountUpdateDTO) => {
   const updatedAccount = await updateAccount(accountId, updateData);
 
   return updatedAccount;

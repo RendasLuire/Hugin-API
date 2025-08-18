@@ -45,7 +45,7 @@ export const loginUser = async (data: UserLoginDTO) => {
     throw new Error("User not found");
   }
 
-  const isPasswordValid = await bcrypt.compare(password, user.password);
+  const isPasswordValid = await bcrypt.compare(password, user.passwordHash);
   if (!isPasswordValid) {
     throw new Error("Invalid password");
   }

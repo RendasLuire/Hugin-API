@@ -22,7 +22,7 @@ export const loadNewUserData = async (userId: string) => {
     return false;
   }
 
-  const initialAccount = await createInitialAccount(user._id, primigeniusType._id, initialBankData._id);
+  const initialAccount = await createInitialAccount({userId: user._id, accountTypeId: primigeniusType._id, bankId: initialBankData._id});
 
   if (!initialAccount) {
     return false;

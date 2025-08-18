@@ -6,7 +6,7 @@ import {
   getUserByEmail as getUserByEmailRepository, 
   getUserById
 } from "../repositories/user.repository";
-import { BaseUserDTO, UserCreateDTO } from "../types/user.type";
+import { UserCreateDTO } from "../types/user.type";
 import bcrypt from "bcryptjs";
 import { deleteUserData, loadNewUserData } from "./userSetup.service";
 
@@ -75,9 +75,9 @@ export const getUserByEmail = async (email: string) => {
   }
 }
 
-export const createNewUser = async (userData: UserInputData) => {
+export const createNewUser = async (userData: UserCreateDTO) => {
   try {
-  userData.passwordHash = await bcrypt.hash(userData.passwordHash as string, 10);
+  userData.password = await bcrypt.hash(userData.password as string, 10);
 
     const newUser = await createUser(userData);
 
@@ -106,7 +106,7 @@ export const existingUser = async (email: string) => {
   }
 }
 
-export const updateUser = async (userId: string, userData: Partial<UserInputData>) => {
+export const updateUser = async (userId: string, userData: Partial<UserCreateDTO>) => {
   try {
     const user = await getUserById(userId);
     if (!user) {

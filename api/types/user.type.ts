@@ -2,8 +2,9 @@ import { IUser } from "../models/User.model";
 
 export type BaseUserDTO = Omit<IUser, "createdAt" | "updatedAt">;
 
-export type UserCreateDTO = Omit<BaseUserDTO, "_id" | "passwordHash"> & {
-  password: string;
+export type UserCreateDTO = Omit<BaseUserDTO, "_id" | "passwordHash" | "role"> & {
+  password: string,
+  role?: string;
 };
 
 export type UserUpdateDTO = Partial<Pick<BaseUserDTO, "name" | "email">> & {

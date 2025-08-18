@@ -83,7 +83,7 @@ export const createUser = async (req: Request, res: Response) => {
       });
     }
 
-    const newUser = await createNewUser({ name, email, passwordHash: password });
+    const newUser = await createNewUser({ name, email, password });
 
     if (!newUser) {
       res.status(500).json({
